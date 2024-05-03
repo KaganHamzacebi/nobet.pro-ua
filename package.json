@@ -14,7 +14,8 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.4.0",
-    "@prisma/client": "^5.10.2",
+    "@prisma/client": "^5.13.0",
+    "@prisma/extension-accelerate": "^1.0.0",
     "@t3-oss/env-nextjs": "^0.10.1",
     "@tanstack/react-query": "^5.25.0",
     "@trpc/client": "next",

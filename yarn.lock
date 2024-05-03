@@ -484,7 +484,7 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@prisma/client@^5.10.2":
+"@prisma/client@^5.13.0":
   version "5.13.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.13.0.tgz#b9f1d0983d714e982675201d8222a9ecb4bdad4a"
   integrity sha512-uYdfpPncbZ/syJyiYBwGZS8Gt1PTNoErNYMuqHDa2r30rNSFtgTA/LXsSk55R7pdRTMi5pHkeP9B14K6nHmwkg==
@@ -508,6 +508,11 @@
     "@prisma/engines-version" "5.13.0-23.b9a39a7ee606c28e3455d0fd60e78c3ba82b1a2b"
     "@prisma/fetch-engine" "5.13.0"
     "@prisma/get-platform" "5.13.0"
+
+"@prisma/extension-accelerate@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@prisma/extension-accelerate/-/extension-accelerate-1.0.0.tgz#749cca2d4bbbb00ed7ca060d6c85426a35583112"
+  integrity sha512-5oSpPtKCMfTl/sSXaS/7vBsPqfm+eEVB6/5KPBJITFatDoFcmjx/PIC/T93mHLiHI98xKwosPN59NGXjDDhcFA==
 
 "@prisma/fetch-engine@5.13.0":
   version "5.13.0"
