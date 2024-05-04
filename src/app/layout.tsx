@@ -2,7 +2,6 @@ import "@/styles/globals.css";
 
 import { Inter } from "next/font/google";
 
-import { TRPCReactProvider } from "@/trpc/react";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -20,12 +19,5 @@ export default function RootLayout({
 }: {
   children: Readonly<React.ReactNode>;
 }) {
-  return (
-    <html lang="en">
-      <head />
-      <body className={`antialized font-sans ${inter.variable}`}>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
-      </body>
-    </html>
-  );
+  return (;
 }
