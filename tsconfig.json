@@ -8,6 +8,7 @@
     "resolveJsonModule": true,
     "moduleDetection": "force",
     "isolatedModules": true,
+    "importHelpers": true,
 
     /* Strictness */
     "strict": true,
@@ -26,7 +27,10 @@
     /* Path Aliases */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/lib/*": ["./src/lib/*"],
+      "@styles/*": ["./src/styles/*"]
     }
   },
   "include": [
@@ -36,6 +40,7 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.js",
+    "**/*.jsx",
     ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
