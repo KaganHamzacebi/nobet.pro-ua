@@ -1,5 +1,4 @@
-
-export const MoonIcon = (props: any) => (
+export const MoonIcon = ({ ...props }) => (
   <svg
     aria-hidden="true"
     focusable="false"
