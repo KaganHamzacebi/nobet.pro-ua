@@ -1,5 +1,5 @@
 
-export const SunIcon = (props) => (
+export const SunIcon = (props: any) => (
   <svg
     aria-hidden="true"
     focusable="false"
