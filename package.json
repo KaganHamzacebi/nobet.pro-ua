@@ -30,6 +30,7 @@
     "@trpc/client": "next",
     "@trpc/react-query": "next",
     "@trpc/server": "next",
+    "@vercel/speed-insights": "^1.0.10",
     "dropdown": "^0.2.0",
     "framer-motion": "^11.1.7",
     "next": "^14.2.3",
