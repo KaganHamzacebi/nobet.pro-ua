@@ -32,6 +32,7 @@ export function LocaleSwitcher({ ...props }) {
       autoFocus={false}
       variant="bordered"
       selectionMode="single"
+      disabledKeys={[locale]}
       defaultSelectedKeys={[locale]}
       onSelectionChange={onLocaleChange}
       renderValue={(items) => {
