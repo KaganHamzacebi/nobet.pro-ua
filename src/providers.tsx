@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import type { ReactNode } from "react";
 
-export function Providers({ children }: Readonly<{ children: ReactNode }>) {
+export function Providers({ children }: Readonly<ProviderProps>) {
   return (
     <NextUIProvider>
       <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
@@ -17,3 +17,7 @@ export function Providers({ children }: Readonly<{ children: ReactNode }>) {
     </NextUIProvider>
   );
 }
+
+type ProviderProps = {
+  children: Readonly<ReactNode>;
+};
