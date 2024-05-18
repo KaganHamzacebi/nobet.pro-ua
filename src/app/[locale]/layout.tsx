@@ -1,6 +1,7 @@
 import "@/styles/globals.css";
 
 import { Header } from "@/components/ui/Header";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import { Inter } from "next/font/google";
@@ -29,6 +30,7 @@ export default async function RootLayout({
     <html className="h-full" lang={locale}>
       <head />
       <body className={`antialized min-h-screen font-sans ${inter.variable}`}>
+        <SpeedInsights />
         <Providers>
           <NextIntlClientProvider messages={messages}>
             <Header />
