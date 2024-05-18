@@ -1,8 +1,9 @@
 import "@/styles/globals.css";
 
-import { ThemeSwitcherButton } from "@/components/ui/ThemeSwitcherButton";
+import { Header } from "@/components/ui/Header";
+import { locales } from "@/config";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, unstable_setRequestLocale } from "next-intl/server";
 import { Inter } from "next/font/google";
 import { type ReactNode } from "react";
 import { Providers } from "../../providers";
@@ -18,19 +19,24 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
 export default async function RootLayout({
   children,
   params: { locale },
 }: Readonly<LayoutProps>) {
+  unstable_setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
-    <html id="Root" lang={locale} className="dark">
+    <html className="h-full" lang={locale}>
       <head />
       <body className={`antialized min-h-screen font-sans ${inter.variable}`}>
         <Providers>
-          <ThemeSwitcherButton className="absolute right-4 top-4" />
           <NextIntlClientProvider messages={messages}>
+            <Header />
             {children}
           </NextIntlClientProvider>
         </Providers>
