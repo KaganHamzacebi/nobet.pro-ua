@@ -4,7 +4,7 @@ import { ThemeSwitcherButton } from "@/components/ui/ThemeSwitcherButton";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { Inter } from "next/font/google";
-import React, { type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Providers } from "../../providers";
 
 const inter = Inter({
