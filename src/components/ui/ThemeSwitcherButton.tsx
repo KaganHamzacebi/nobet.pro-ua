@@ -3,10 +3,11 @@
 import { FTSwitch } from "@/components/atomic/FTSwitch";
 import { MoonIcon } from "@/components/icons/MoonIcon";
 import { SunIcon } from "@/components/icons/SunIcon";
+import { Skeleton } from "@nextui-org/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
-export function ThemeSwitcherButton(props: Readonly<ThemeSwitcherProps>) {
+export function ThemeSwitcherButton({ ...props }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -14,7 +15,7 @@ export function ThemeSwitcherButton(props: Readonly<ThemeSwitcherProps>) {
     setMounted(true);
   }, []);
 
-  if (!mounted) return;
+  if (!mounted) return <Skeleton className="h-[32px] w-[56px] rounded-3xl" />;
 
   return (
     <FTSwitch
@@ -30,7 +31,3 @@ export function ThemeSwitcherButton(props: Readonly<ThemeSwitcherProps>) {
     />
   );
 }
-
-type ThemeSwitcherProps = {
-  className: string;
-};
