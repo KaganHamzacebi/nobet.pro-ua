@@ -1,6 +1,8 @@
 import "@/styles/globals.css";
 
 import { Header } from "@/components/ui/Header";
+import { env } from "@/env";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, unstable_setRequestLocale } from "next-intl/server";
@@ -31,6 +33,7 @@ export default async function RootLayout({
       <head />
       <body className={`antialized min-h-screen font-sans ${inter.variable}`}>
         <SpeedInsights />
+        <GoogleAnalytics gaId={env.GA_ID} />
         <Providers>
           <NextIntlClientProvider messages={messages}>
             <Header />
