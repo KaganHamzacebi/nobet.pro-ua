@@ -1,15 +1,17 @@
 import type { MetadataRoute } from "next";
 
+const baseUrl = "https://nobet.pro";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: "https://nobet.pro",
+      url: baseUrl,
       lastModified: new Date(),
       changeFrequency: "yearly",
       alternates: {
         languages: {
-          en: "https://nobet.pro/en",
-          tr: "https://nobet.pro/tr",
+          en: baseUrl + "/en",
+          tr: baseUrl + "/tr",
         },
       },
     },
