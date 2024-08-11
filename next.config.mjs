@@ -1,14 +1,9 @@
-/**
- * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially useful
- * for Docker builds.
- */
-await import("./src/env.js");
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    reactStrictMode: true,
+    experimental: {
+        optimizePackageImports: ['@mantine/core', '@mantine/hooks']
+    }
+};
 
-import createNextIntlPlugin from "next-intl/plugin";
-
-const withNextIntl = createNextIntlPlugin("./src/i18n.ts");
-
-/** @type {import("next").NextConfig} */
-const nextConfig = {};
-
-export default withNextIntl(nextConfig);
+export default nextConfig;
