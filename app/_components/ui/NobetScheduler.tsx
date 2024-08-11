@@ -4,14 +4,14 @@ import { useState } from 'react';
 import { Assistant } from '@/components/ui/Assistant';
 import AddIcon from '@/components/icons/Add';
 import { AssistantModel } from '@/models/AssistantModel';
-import { GeneratorUUID } from '@/app/_libs/IDGenerator';
+import { GenerateUUID } from '@/libs/id-generator';
 
 export function NobetScheduler() {
-  const [assistantList, setAssistantList] = useState<AssistantModel[]>([{ id: GeneratorUUID(), name: 'Kel Mahmut' }]);
+  const [assistantList, setAssistantList] = useState<AssistantModel[]>([{ id: GenerateUUID(), name: 'Kel Mahmut' }]);
 
   const addAssistant = () => {
     setAssistantList(
-      [...assistantList, { id: GeneratorUUID(), name: '' }]
+      [...assistantList, { id: GenerateUUID(), name: '' }]
     );
   };
 
