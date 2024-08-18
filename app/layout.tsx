@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ColorSchemeScript } from '@mantine/core';
-import '@/styles/globals.css';
+import '@/styles/globals.scss';
 import { ReactNode } from 'react';
 import Providers from '@/app/providers';
 
