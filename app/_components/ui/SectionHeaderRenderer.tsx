@@ -5,12 +5,12 @@ import { TrashSolidIcon } from "@/components/icons/TrashSolid";
 import { useDebouncedCallback, useDidUpdate } from "@mantine/hooks";
 import { swatches } from "@/libs/helpers/color-generator";
 
-interface IAreaHeaderRenderer {
+interface ISectionHeaderRenderer {
   section: ISection;
   setSectionColor: (sectionId: string, newColor: string) => void;
 }
 
-export const AreaHeaderRenderer: FC<IAreaHeaderRenderer> = ({ section, setSectionColor }) => {
+export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({ section, setSectionColor }) => {
   const [currentColor, setCurrentColor] = useState(section.color);
   const setDebouncedColor = useDebouncedCallback((newColor: string) => {
     setSectionColor(section.id, newColor);
