@@ -49,7 +49,7 @@ export function NobetScheduler() {
   };
 
   const removeAssistant = (assistantId: string) => {
-    setAssistantList((prevState) => prevState.filter(i => i.id !== assistantId));
+    setAssistantList(prevState => prevState.filter(assistant => assistant.id !== assistantId));
   };
 
   const setAssistantName = (assistantId: string, name: string) => {
@@ -152,7 +152,8 @@ export function NobetScheduler() {
       striped: 'even',
       withColumnBorders: true,
     },
-    state: {isLoading: isPending}
+    state: {isLoading: isPending},
+    getRowId: (row) => row.id
   });
 
   return (
