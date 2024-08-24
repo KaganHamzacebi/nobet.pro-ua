@@ -5,6 +5,7 @@ import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
 import { IAssistant } from '@/models/IAssistant';
 import { ISection } from '@/models/ISection';
 import { DutyModel } from '@/models/DutyModel';
+import { newAssistant } from "@/libs/helpers/model-generator";
 
 const DefaultSection: ISection = {
   id: GenerateUUID(),
@@ -12,13 +13,7 @@ const DefaultSection: ISection = {
   color: '#53a83e'
 };
 
-const DefaultAssistant: IAssistant = {
-  id: GenerateUUID(),
-  name: 'Kel Mahmut',
-  selectedDays: [],
-  disabledDays: new Set<number>(),
-  sectionConfig: []
-};
+const DefaultAssistant: IAssistant = newAssistant("Kel Mahmut");
 
 const DefaultDuty: DutyModel = {
   assistant: DefaultAssistant,

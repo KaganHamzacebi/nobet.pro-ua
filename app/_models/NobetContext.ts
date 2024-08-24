@@ -3,13 +3,14 @@ import { ISection } from '@/models/ISection';
 import { IAssistant } from '@/models/IAssistant';
 import { DutyModel } from '@/models/DutyModel';
 import { DefaultAssistantList, DefaultMonthConfig, DefaultSectionList } from '@/libs/mock/nobet.data';
+import { Dispatch, SetStateAction } from "react";
 
 export interface INobetContext {
   monthConfig: MonthConfig;
   sectionList: ISection[];
   setSectionList: (sectionList: ISection[]) => void;
   assistantList: IAssistant[];
-  setAssistantList: (assistantList: IAssistant[]) => void;
+  setAssistantList:  Dispatch<SetStateAction<IAssistant[]>>;
   dutyList: DutyModel[];
   setDutyList: (dutyList: DutyModel[]) => void;
 }

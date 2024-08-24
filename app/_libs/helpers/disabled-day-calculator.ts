@@ -1,4 +1,4 @@
-export const getDisabledDays = (selectedDayIndexes: Set<number>, range: number, min = 1, max = 31) => {
+export const getDisabledDays = (selectedDayIndexes: number[], range: number, min = 1, max = 31) => {
   const disabledDays = new Set<number>();
 
   for (const selectedDayIndex of Array.from(selectedDayIndexes)) {
