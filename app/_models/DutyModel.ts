@@ -1,8 +1,8 @@
-import { AssistantModel } from '@/models/AssistantModel';
-import { SectionModel } from '@/models/SectionModel';
+import { IAssistant } from '@/models/IAssistant';
+import { ISection } from '@/models/ISection';
 
 export interface DutyModel {
-  assistant: AssistantModel;
-  area: SectionModel;
+  assistant: IAssistant;
+  area: ISection;
   dayCount: number;
 }

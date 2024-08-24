@@ -1,15 +1,15 @@
 import { MonthConfig } from '@/models/MonthConfig';
-import { SectionModel } from '@/models/SectionModel';
-import { AssistantModel } from '@/models/AssistantModel';
+import { ISection } from '@/models/ISection';
+import { IAssistant } from '@/models/IAssistant';
 import { DutyModel } from '@/models/DutyModel';
 import { DefaultAssistantList, DefaultMonthConfig, DefaultSectionList } from '@/libs/mock/nobet.data';
 
 export interface INobetContext {
   monthConfig: MonthConfig;
-  sectionList: SectionModel[];
-  setSectionList: (sectionList: SectionModel[]) => void;
-  assistantList: AssistantModel[];
-  setAssistantList: (assistantList: AssistantModel[]) => void;
+  sectionList: ISection[];
+  setSectionList: (sectionList: ISection[]) => void;
+  assistantList: IAssistant[];
+  setAssistantList: (assistantList: IAssistant[]) => void;
   dutyList: DutyModel[];
   setDutyList: (dutyList: DutyModel[]) => void;
 }

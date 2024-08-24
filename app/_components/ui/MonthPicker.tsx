@@ -1,11 +1,11 @@
-import { MonthCell } from '@/components/ui/MonthCell';
+import { MonthCellRenderer } from '@/components/ui/MonthCellRenderer';
 import { FC, memo, useContext } from 'react';
 import { NobetContext } from '@/components/ui/NobetScheduler';
-import { AssistantModel } from '@/models/AssistantModel';
+import { IAssistant } from '@/models/IAssistant';
 import { Table } from '@mantine/core';
 
 interface IMonthPickerProps {
-  assistantList: AssistantModel[];
+  assistantList: IAssistant[];
 }
 
 export const MonthPicker: FC<IMonthPickerProps> = memo(({ assistantList }) => {
@@ -23,10 +23,10 @@ export const MonthPicker: FC<IMonthPickerProps> = memo(({ assistantList }) => {
         {
           Array.from({ length: monthConfig.datesInMonth ?? 0 }).map((_, i) => (
             <Table.Td key={i}>
-              <MonthCell key={i}
-                         dayIndex={i + 1}
-                         assistant={assistant}
-                         isWeekend={monthConfig.weekendIndexes.includes(i + 1)}
+              <MonthCellRenderer key={i}
+                                 dayIndex={i + 1}
+                                 assistant={assistant}
+                                 isWeekend={monthConfig.weekendIndexes.includes(i + 1)}
               />
             </Table.Td>
           ))

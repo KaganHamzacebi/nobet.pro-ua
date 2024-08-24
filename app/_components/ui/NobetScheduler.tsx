@@ -1,23 +1,23 @@
 'use client';
 
-import { createContext, useEffect, useState } from 'react';
-import { AssistantModel } from '@/models/AssistantModel';
-import { GenerateUUID } from '@/libs/helpers/id-generator';
+import { createContext, useEffect, useMemo, useState } from 'react';
+import { IAssistant } from '@/models/IAssistant';
 import { MonthPickerInput } from '@mantine/dates';
 import moment from 'moment';
 import { MonthConfig } from '@/models/MonthConfig';
 import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
 import CalendarIcon from '@/components/icons/Calendar';
-import { ActionIcon, Box, Button, NumberInput, SegmentedControl, TextInput } from '@mantine/core';
-import { MonthPicker } from '@/components/ui/MonthPicker';
-import { AreaEditor } from '@/components/ui/AreaEditor';
-import { SectionModel } from '@/models/SectionModel';
+import { Button, NumberInput, SegmentedControl } from '@mantine/core';
+import { ISection } from '@/models/ISection';
 import { DefaultAssistantList, DefaultDutyList, DefaultMonthConfig, DefaultSectionList } from '@/libs/mock/nobet.data';
 import { AddButton } from '@/components/ui/AddButton';
-import { getRandomColor } from '@/libs/helpers/color-generator';
 import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { DutyModel } from '@/models/DutyModel';
 import { DefaultNobetContext, INobetContext } from '@/models/NobetContext';
+import { MantineReactTable, MRT_ColumnDef, useMantineReactTable } from 'mantine-react-table';
+import { newAssistant } from '@/libs/helpers/model-generator';
+import { AssistantNameRenderer } from '@/components/ui/AssistantNameRenderer';
+import { MonthCellRenderer } from '@/components/ui/MonthCellRenderer';
 
 enum ScreenMode {
   MonthPicker = 'MonthPicker',
@@ -29,8 +29,8 @@ export const NobetContext = createContext<INobetContext>(DefaultNobetContext);
 export function NobetScheduler() {
   const [monthConfig, setMonthConfig] = useState<MonthConfig>(DefaultMonthConfig);
   const [screenMode, setScreenMode] = useState<ScreenMode>(ScreenMode.MonthPicker);
-  const [assistantList, setAssistantList] = useState<AssistantModel[]>(DefaultAssistantList);
-  const [sectionList, setSectionList] = useState<SectionModel[]>(DefaultSectionList);
+  const [assistantList, setAssistantList] = useState<IAssistant[]>(DefaultAssistantList);
+  const [sectionList, setSectionList] = useState<ISection[]>(DefaultSectionList);
   const [dutyList, setDutyList] = useState<DutyModel[]>(DefaultDutyList);
 
   useEffect(() => {
@@ -38,53 +38,16 @@ export function NobetScheduler() {
   }, []);
 
   const addAssistant = () => {
-    const newAssistant: AssistantModel = {
-      id: GenerateUUID(),
-      name: '',
-      selectedDays: new Set<number>()
-    };
-    setAssistantList([...assistantList, newAssistant]);
-
-    const newDuties = sectionList.map(section => ({
-      assistant: newAssistant,
-      area: section,
-      dayCount: 0
-    }) as DutyModel);
-    setDutyList([...dutyList, ...newDuties]);
+    setAssistantList((prevState) => [...prevState, newAssistant()]);
   };
 
-  const removeAssistant = (assistant: AssistantModel) => {
-    setAssistantList(
-      assistantList.filter(a => a.id !== assistant.id)
-    );
-
-    setDutyList(
-      dutyList.filter(duty => duty.assistant.id !== assistant.id)
-    );
+  const removeAssistant = (assistantId: string) => {
+    setAssistantList((prevState) => prevState.filter(i => i.id !== assistantId));
   };
 
-  const addArea = () => {
-    const newSection: SectionModel = {
-      id: GenerateUUID(),
-      name: `New Section - ${sectionList.length + 1}`,
-      color: getRandomColor()
-    };
-    setSectionList([...sectionList, newSection]);
-
-    const newDuties = assistantList.map(assistant => ({
-      assistant: assistant,
-      area: newSection,
-      dayCount: 0
-    }) as DutyModel);
-    setDutyList([...dutyList, ...newDuties]);
-  };
-
-  const clearSelections = () => {
-    setAssistantList(
-      assistantList.map(assistant => ({
-        ...assistant,
-        selectedDays: new Set<number>()
-      }))
+  const setAssistantName = (assistantId: string, name: string) => {
+    setAssistantList((prevState) =>
+      prevState.map(assistant => assistant.id === assistantId ? { ...assistant, name } : assistant)
     );
   };
 
@@ -103,6 +66,45 @@ export function NobetScheduler() {
       numberOfRestDays: numberOfRestDays
     });
   };
+
+  const columns = useMemo<MRT_ColumnDef<IAssistant>[]>(
+    () => [
+      {
+        accessorKey: 'name', //simple recommended way to define a column
+        header: 'Assistant',
+        Cell: (({ row }) => (
+          <AssistantNameRenderer row={row}
+                                 setAssistantName={setAssistantName}
+                                 removeAssistant={removeAssistant}
+          />
+        ))
+      },
+      ...Array.from({ length: monthConfig.datesInMonth }).map((_, index) => ({
+        header: String(index + 1),
+        size: 30,
+        Cell: (({ cell }) =>
+            <MonthCellRenderer dayIndex={index + 1}
+                               isWeekend={monthConfig.weekendIndexes.includes(index + 1)}
+                               assistant={cell.row.original}
+            />
+        )
+      }) as MRT_ColumnDef<IAssistant>)],
+    [monthConfig.datesInMonth]
+  );
+
+
+  const table = useMantineReactTable({
+    columns: columns,
+    data: assistantList,
+    enableTopToolbar: false,
+    enableBottomToolbar: false,
+    enablePagination: false,
+    enableColumnActions: false,
+    enableColumnPinning: true,
+    initialState: {
+      columnPinning: { left: ['name'] }
+    }
+  });
 
   return (
     <NobetContext.Provider
@@ -137,45 +139,17 @@ export function NobetScheduler() {
             />
           </div>
         </div>
-        <div className="w-full max-w-full flex flex-row bg-silver dark:bg-blackRock rounded p-4 mt-4">
-          <div className="min-w-fit flex flex-col gap-y-2">
-            <Box className="bg-onyx py-1 px-2 rounded shadow-lg font-semibold">
-              <span>Assistants / {screenMode === ScreenMode.MonthPicker ? 'Days' : 'Areas'}</span>
-            </Box>
-            {
-              assistantList.map((assistant) =>
-                <div key={assistant.id} className="flex flex-row gap-x-2 items-center">
-                  <TextInput className="w-[120px] h-[38px]"
-                             defaultValue={assistant.name}
-                  />
-                  {
-                    assistantList.length > 1 &&
-                    <ActionIcon size="sm" variant="transparent"
-                                onClick={() => removeAssistant(assistant)}>
-                      <TrashSolidIcon className="text-attention" />
-                    </ActionIcon>
-                  }
-                </div>
-              )
-            }
-          </div>
-          <div className="max-w-full overflow-x-auto ml-4 flex flex-col gap-y-4 outline-0">
-            <div className={`${screenMode === ScreenMode.MonthPicker ? 'visible' : 'hidden'}`}>
-              <MonthPicker assistantList={assistantList} />
-            </div>
-            <div className={`${screenMode === ScreenMode.AreaEdit ? 'visible' : 'hidden'}`}>
-              <AreaEditor />
-            </div>
-          </div>
+        <div className="mt-2">
+          <MantineReactTable<IAssistant> table={table}
+          />
         </div>
         <div className="mt-4 flex flex-row gap-x-4">
           <AddButton label="Add Assistant" onClick={addAssistant} />
-          {screenMode === ScreenMode.AreaEdit && <AddButton label="Add Area" onClick={addArea} />}
+          {screenMode === ScreenMode.AreaEdit && <AddButton label="Add Area" />}
           {
             screenMode === ScreenMode.MonthPicker &&
             <Button leftSection={<TrashSolidIcon className="size-4" />}
-                    className="bg-attention hover:bg-attention-hover"
-                    onClick={clearSelections}>
+                    className="bg-attention hover:bg-attention-hover">
               Clear Selections
             </Button>
           }

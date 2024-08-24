@@ -2,20 +2,22 @@ import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { MonthConfig } from '@/models/MonthConfig';
 import moment from 'moment/moment';
 import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
-import { AssistantModel } from '@/models/AssistantModel';
-import { SectionModel } from '@/models/SectionModel';
+import { IAssistant } from '@/models/IAssistant';
+import { ISection } from '@/models/ISection';
 import { DutyModel } from '@/models/DutyModel';
 
-const DefaultSection: SectionModel = {
+const DefaultSection: ISection = {
   id: GenerateUUID(),
   name: 'War Room',
   color: '#53a83e'
 };
 
-const DefaultAssistant: AssistantModel = {
+const DefaultAssistant: IAssistant = {
   id: GenerateUUID(),
   name: 'Kel Mahmut',
-  selectedDays: new Set<number>()
+  selectedDays: [],
+  disabledDays: new Set<number>(),
+  sectionConfig: []
 };
 
 const DefaultDuty: DutyModel = {
@@ -24,8 +26,8 @@ const DefaultDuty: DutyModel = {
   dayCount: 0
 };
 
-const DefaultSectionList: SectionModel[] = [DefaultSection];
-const DefaultAssistantList: AssistantModel[] = [DefaultAssistant];
+const DefaultSectionList: ISection[] = [DefaultSection];
+const DefaultAssistantList: IAssistant[] = [DefaultAssistant];
 const DefaultDutyList: DutyModel[] = [DefaultDuty];
 
 const DefaultMonthConfig: MonthConfig = {

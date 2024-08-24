@@ -1,7 +1,7 @@
 import { FC, useContext } from 'react';
-import { SectionModel } from '@/models/SectionModel';
+import { ISection } from '@/models/ISection';
 import { ActionIcon, ColorSwatch, NumberInput, Table, TextInput } from '@mantine/core';
-import { AssistantModel } from '@/models/AssistantModel';
+import { IAssistant } from '@/models/IAssistant';
 import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { KeyOf, TypeOfKey } from '@/libs/interfaces/utils';
 import { NobetContext } from '@/components/ui/NobetScheduler';
@@ -12,9 +12,9 @@ interface IAreaEditorProps {
 export const AreaEditor: FC<IAreaEditorProps> = ({}) => {
   const { sectionList, setSectionList, assistantList, dutyList, setDutyList } = useContext(NobetContext);
 
-  const onSectionChange = <T extends KeyOf<SectionModel>>(
-    fields: Record<T, TypeOfKey<T, SectionModel>>,
-    section: SectionModel
+  const onSectionChange = <T extends KeyOf<ISection>>(
+    fields: Record<T, TypeOfKey<T, ISection>>,
+    section: ISection
   ) => {
     const updatedSectionList = sectionList.map((item) =>
       item.id === section.id ? { ...item, ...fields } : item
@@ -23,7 +23,7 @@ export const AreaEditor: FC<IAreaEditorProps> = ({}) => {
     setSectionList(updatedSectionList);
   };
 
-  const removeSection = (section: SectionModel) => {
+  const removeSection = (section: ISection) => {
     setSectionList(
       sectionList.filter(s => s.id !== section.id)
     );
@@ -33,7 +33,7 @@ export const AreaEditor: FC<IAreaEditorProps> = ({}) => {
     );
   };
 
-  const setDutyCount = (count: number, assistant: AssistantModel, section: SectionModel) => {
+  const setDutyCount = (count: number, assistant: IAssistant, section: ISection) => {
     setDutyList(
       dutyList.map(duty => (
         (duty.assistant === assistant && duty.area === section) ? { ...duty, dayCount: count } : duty

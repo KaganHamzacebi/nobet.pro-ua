@@ -1,4 +1,4 @@
-export interface SectionModel {
+export interface ISection {
   id: string;
   name: string;
   color: string;
