@@ -1,11 +1,12 @@
 import { Checkbox, Menu, MenuDropdown, MenuItem, Tooltip } from '@mantine/core';
-import { FC, useContext, useEffect, useMemo, useState } from 'react';
+import { FC, useContext, useMemo, useState } from 'react';
 import { ISection } from '@/models/ISection';
 import { NobetContext } from '@/components/ui/NobetScheduler';
 import { IAssistant } from '@/models/IAssistant';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
 import { useDidUpdate } from '@mantine/hooks';
+import { newSelectedDayConfig } from '@/libs/helpers/model-generator';
 
 interface IMonthCellProps {
   dayIndex: number;
@@ -14,20 +15,28 @@ interface IMonthCellProps {
 }
 
 export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, assistant }) => {
-  const { monthConfig, sectionList, setAssistantList, selectedDayConfig } = useContext(NobetContext);
+  const {
+    monthConfig,
+    sectionList,
+    setAssistantList,
+    selectedDayConfig,
+    setSelectedDayConfig
+  } = useContext(NobetContext);
   const [opened, setOpened] = useState(false);
   const getSelectedSection = () => {
     return sectionList.find(s => s.id === assistant.selectedDays[dayIndex]?.id);
   };
   const [selectedSection, setSelectedSection] = useState<ISection | null | undefined>(getSelectedSection());
 
-  useEffect(() => {
-    console.log(selectedDayConfig);
-  }, [selectedDayConfig]);
+  const filteredSectionList = useMemo(() => {
+    return sectionList.filter(s => !selectedDayConfig[dayIndex]?.sectionIds.has(s.id) ?? true);
+  }, [selectedDayConfig[dayIndex]?.version]);
 
   const isDisabled = useMemo(() => {
-    return assistant.disabledDays.includes(dayIndex);
-  }, [assistant.disabledVersion]);
+    const isDisabledDay = assistant.disabledDays.includes(dayIndex);
+    const isAllSectionsAreFull = filteredSectionList.length === 0 && selectedSection == undefined;
+    return isDisabledDay || isAllSectionsAreFull;
+  }, [assistant.disabledVersion, filteredSectionList]);
 
   useDidUpdate(() => {
     const updatedAssistant = { ...assistant };
@@ -48,13 +57,21 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, as
   const onCheckboxChangeHandler = (isChecked: boolean) => {
     setOpened(isChecked);
     if (!isChecked) {
-      setSelectedSection(null);
+      selectSection(undefined);
     }
   };
 
-  const selectSection = (section: ISection) => {
+  const selectSection = (section?: ISection) => {
+    const dayConfig = { ...selectedDayConfig };
+    if (section) {
+      dayConfig[dayIndex] ??= newSelectedDayConfig();
+      dayConfig[dayIndex].sectionIds.add(section.id);
+    } else {
+      dayConfig[dayIndex].sectionIds.delete(selectedSection?.id ?? '');
+      dayConfig[dayIndex].version = GenerateUUID();
+    }
+    setSelectedDayConfig(dayConfig);
     setSelectedSection(section);
-
   };
 
   const menuTarget = (
@@ -75,7 +92,7 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, as
   const menuDropdown = (
     <MenuDropdown>
       {
-        sectionList.map((section: ISection) => (
+        filteredSectionList.map((section: ISection) => (
           <MenuItem key={section.id} onClick={() => selectSection(section)}>
             {section.name}
           </MenuItem>

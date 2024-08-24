@@ -4,7 +4,11 @@ import { IAssistant } from '@/models/IAssistant';
 import { DefaultAssistantList, DefaultMonthConfig, DefaultSectionList } from '@/libs/mock/nobet.data';
 import { Dispatch, SetStateAction } from 'react';
 
-export type SelectedDayConfig = Record<number, ISection>;
+// Stores data by DayIndex
+export type SelectedDayConfig = Record<number, {
+  sectionIds: Set<string>;
+  version: string;
+}>;
 
 export interface INobetContext {
   monthConfig: MonthConfig;
@@ -26,5 +30,5 @@ export const DefaultNobetContext: INobetContext = {
   },
   selectedDayConfig: {},
   setSelectedDayConfig: () => {
-  },
+  }
 };
