@@ -1,12 +1,12 @@
-import { Checkbox, Menu, MenuDropdown, MenuItem, Tooltip } from '@mantine/core';
-import { FC, useContext, useMemo, useState } from 'react';
-import { ISection } from '@/models/ISection';
-import { NobetContext } from '@/components/ui/NobetScheduler';
-import { IAssistant } from '@/models/IAssistant';
-import { GenerateUUID } from '@/libs/helpers/id-generator';
-import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
-import { useDidUpdate } from '@mantine/hooks';
-import { newSelectedDayConfig } from '@/libs/helpers/model-generator';
+import {Checkbox, Menu, MenuDropdown, MenuItem, Tooltip} from '@mantine/core';
+import {FC, useContext, useMemo, useState} from 'react';
+import {ISection} from '@/models/ISection';
+import {NobetContext} from '@/components/ui/NobetScheduler';
+import {IAssistant} from '@/models/IAssistant';
+import {GenerateUUID} from '@/libs/helpers/id-generator';
+import {getDisabledDays} from '@/libs/helpers/disabled-day-calculator';
+import {useDidUpdate} from '@mantine/hooks';
+import {newSelectedDayConfig} from '@/libs/helpers/model-generator';
 
 interface IMonthCellProps {
   dayIndex: number;
@@ -14,7 +14,7 @@ interface IMonthCellProps {
   assistant: IAssistant;
 }
 
-export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, assistant }) => {
+export const MonthCellRenderer: FC<IMonthCellProps> = ({dayIndex, isWeekend, assistant}) => {
   const {
     monthConfig,
     sectionList,
@@ -39,7 +39,7 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, as
   }, [assistant.disabledVersion, filteredSectionList]);
 
   useDidUpdate(() => {
-    const updatedAssistant = { ...assistant };
+    const updatedAssistant = {...assistant};
     if (selectedSection) updatedAssistant.selectedDays[dayIndex] = selectedSection;
     else delete updatedAssistant.selectedDays[dayIndex];
     updatedAssistant.selectedVersion = GenerateUUID();
@@ -62,7 +62,7 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, as
   };
 
   const selectSection = (section?: ISection) => {
-    const dayConfig = { ...selectedDayConfig };
+    const dayConfig = {...selectedDayConfig};
     if (section) {
       dayConfig[dayIndex] ??= newSelectedDayConfig();
       dayConfig[dayIndex].sectionIds.add(section.id);
@@ -77,7 +77,7 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, as
   const menuTarget = (
     <Menu.Target>
       <Tooltip disabled={!selectedSection} label={selectedSection?.name}
-               transitionProps={{ transition: 'pop-bottom-right', duration: 300 }}>
+               transitionProps={{transition: 'pop-bottom-right', duration: 300}}>
         <Checkbox
           checked={!!selectedSection}
           disabled={isDisabled}
@@ -102,9 +102,11 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, isWeekend, as
   );
 
   return (
-    <Menu shadow="md" opened={opened} onChange={setOpened}>
-      {menuTarget}
-      {menuDropdown}
-    </Menu>
+    <div className={`flex flex-col items-center`}>
+      <Menu shadow="md" opened={opened} onChange={setOpened}>
+        {menuTarget}
+        {menuDropdown}
+      </Menu>
+    </div>
   );
 };
