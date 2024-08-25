@@ -1,9 +1,9 @@
-import { ActionIcon, ColorPicker, ColorSwatch, Group, Menu, TextInput, Tooltip } from '@mantine/core';
-import { ISection } from '@/models/ISection';
-import { ChangeEvent, FC, useCallback, useState } from 'react';
-import { TrashSolidIcon } from '@/components/icons/TrashSolid';
-import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
-import { swatches } from '@/libs/helpers/color-generator';
+import {ActionIcon, ColorPicker, ColorSwatch, Group, Menu, TextInput, Tooltip} from '@mantine/core';
+import {ISection} from '@/models/ISection';
+import {ChangeEvent, FC, useCallback, useState} from 'react';
+import {TrashSolidIcon} from '@/components/icons/TrashSolid';
+import {useDebouncedCallback, useDidUpdate} from '@mantine/hooks';
+import {swatches} from '@/libs/helpers/color-generator';
 
 interface ISectionHeaderRenderer {
   section: ISection;
@@ -11,27 +11,31 @@ interface ISectionHeaderRenderer {
   removeSection: (sectionId: ISection['id']) => void;
 }
 
-export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({ section, setSectionProps, removeSection }) => {
-  const [fields, setFields] = useState({ color: section.color, name: section.name });
+export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
+  section,
+  setSectionProps,
+  removeSection,
+}) => {
+  const [fields, setFields] = useState({color: section.color, name: section.name});
 
   const setDebouncedFields = useDebouncedCallback((props: Partial<ISection>) => {
     setSectionProps(section.id, props);
   }, 500);
 
   useDidUpdate(() => {
-    setDebouncedFields({ color: fields.color });
+    setDebouncedFields({color: fields.color});
   }, [fields.color]);
 
   useDidUpdate(() => {
-    setDebouncedFields({ name: fields.name });
+    setDebouncedFields({name: fields.name});
   }, [fields.name]);
 
   const handleColorChange = useCallback((color: string) => {
-    setFields((prev) => ({ ...prev, color }));
+    setFields(prev => ({...prev, color}));
   }, []);
 
   const handleNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setFields((prev) => ({ ...prev, name: event.target.value }));
+    setFields(prev => ({...prev, name: event.target.value}));
   }, []);
 
   return (

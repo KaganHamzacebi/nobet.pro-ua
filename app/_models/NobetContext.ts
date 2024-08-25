@@ -1,14 +1,17 @@
-import { MonthConfig } from '@/models/MonthConfig';
-import { ISection } from '@/models/ISection';
-import { IAssistant } from '@/models/IAssistant';
-import { DefaultAssistantList, DefaultMonthConfig, DefaultSectionList } from '@/libs/mock/nobet.data';
-import { Dispatch, SetStateAction } from 'react';
+import {MonthConfig} from '@/models/MonthConfig';
+import {ISection} from '@/models/ISection';
+import {IAssistant} from '@/models/IAssistant';
+import {DefaultAssistantList, DefaultMonthConfig, DefaultSectionList} from '@/libs/mock/nobet.data';
+import {Dispatch, SetStateAction} from 'react';
 
 // Stores data by DayIndex
-export type SelectedDayConfig = Record<number, {
-  sectionIds: Set<string>;
-  version: string;
-}>;
+export type SelectedDayConfig = Record<
+  number,
+  {
+    sectionIds: Set<string>;
+    version: string;
+  }
+>;
 
 export interface INobetContext {
   monthConfig: MonthConfig;
@@ -23,12 +26,9 @@ export interface INobetContext {
 export const DefaultNobetContext: INobetContext = {
   monthConfig: DefaultMonthConfig,
   sectionList: DefaultSectionList,
-  setSectionList: () => {
-  },
+  setSectionList: () => {},
   assistantList: DefaultAssistantList,
-  setAssistantList: () => {
-  },
+  setAssistantList: () => {},
   selectedDayConfig: {},
-  setSelectedDayConfig: () => {
-  }
+  setSelectedDayConfig: () => {},
 };

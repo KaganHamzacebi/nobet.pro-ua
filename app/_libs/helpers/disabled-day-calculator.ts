@@ -11,4 +11,3 @@ export const getDisabledDays = (selectedDayIndexes: number[], range: number, min
 
   return Array.from(disabledDays);
 };
-

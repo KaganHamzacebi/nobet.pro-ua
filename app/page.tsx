@@ -1,8 +1,8 @@
-import { NobetScheduler } from '@/components/ui/NobetScheduler';
+import {NobetScheduler} from '@/components/ui/NobetScheduler';
 
 export default function Home() {
   return (
-    <div className="px-10 py-10 w-full h-full">
+    <div className="h-full w-full px-10 py-10">
       <NobetScheduler />
     </div>
   );

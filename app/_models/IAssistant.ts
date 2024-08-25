@@ -1,4 +1,4 @@
-import { ISection } from '@/models/ISection';
+import {ISection} from '@/models/ISection';
 
 export interface IAssistant {
   id: string;

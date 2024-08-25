@@ -3,7 +3,7 @@ Button {
 }
 
 .add-button {
-  @apply px-2 py-1 rounded bg-royalBlue text-white;
+  @apply rounded bg-royalBlue px-2 py-1 text-white;
 
   &:hover {
     @apply bg-success;
