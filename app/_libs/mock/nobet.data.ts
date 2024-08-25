@@ -1,9 +1,9 @@
-import {GenerateUUID} from '@/libs/helpers/id-generator';
-import {MonthConfig} from '@/models/MonthConfig';
-import {getWeekendDayIndexes} from '@/libs/helpers/get-weekend-indexes';
-import {IAssistant} from '@/models/IAssistant';
-import {ISection} from '@/models/ISection';
-import {newAssistant} from '@/libs/helpers/model-generator';
+import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
+import { GenerateUUID } from '@/libs/helpers/id-generator';
+import { newAssistant } from '@/libs/helpers/model-generator';
+import { IAssistant } from '@/models/IAssistant';
+import { ISection } from '@/models/ISection';
+import { MonthConfig } from '@/models/MonthConfig';
 import dayjs from 'dayjs';
 
 const DefaultSection: ISection = {
@@ -23,4 +23,4 @@ const DefaultMonthConfig: MonthConfig = {
   numberOfRestDays: 2,
 };
 
-export {DefaultMonthConfig, DefaultSectionList, DefaultAssistantList};
+export { DefaultAssistantList, DefaultMonthConfig, DefaultSectionList };

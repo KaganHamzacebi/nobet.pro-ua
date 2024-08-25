@@ -1,8 +1,12 @@
-import {MonthConfig} from '@/models/MonthConfig';
-import {ISection} from '@/models/ISection';
-import {IAssistant} from '@/models/IAssistant';
-import {DefaultAssistantList, DefaultMonthConfig, DefaultSectionList} from '@/libs/mock/nobet.data';
-import {Dispatch, SetStateAction} from 'react';
+import {
+  DefaultAssistantList,
+  DefaultMonthConfig,
+  DefaultSectionList,
+} from '@/libs/mock/nobet.data';
+import { IAssistant } from '@/models/IAssistant';
+import { ISection } from '@/models/ISection';
+import { MonthConfig } from '@/models/MonthConfig';
+import { Dispatch, SetStateAction } from 'react';
 
 // Stores data by DayIndex
 export type SelectedDayConfig = Record<

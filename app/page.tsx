@@ -1,4 +1,4 @@
-import {NobetScheduler} from '@/components/ui/NobetScheduler';
+import { NobetScheduler } from '@/components/ui/NobetScheduler';
 
 export default function Home() {
   return (

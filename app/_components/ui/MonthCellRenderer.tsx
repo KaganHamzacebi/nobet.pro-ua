@@ -1,20 +1,20 @@
-import {Checkbox, Menu, MenuDropdown, MenuItem, Tooltip} from '@mantine/core';
-import {FC, useContext, useMemo, useState} from 'react';
-import {ISection} from '@/models/ISection';
-import {NobetContext} from '@/components/ui/NobetScheduler';
-import {IAssistant} from '@/models/IAssistant';
-import {GenerateUUID} from '@/libs/helpers/id-generator';
-import {getDisabledDays} from '@/libs/helpers/disabled-day-calculator';
-import {useDidUpdate} from '@mantine/hooks';
-import {newSelectedDayConfig} from '@/libs/helpers/model-generator';
+import { NobetContext } from '@/components/ui/NobetScheduler';
+import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
+import { GenerateUUID } from '@/libs/helpers/id-generator';
+import { newSelectedDayConfig } from '@/libs/helpers/model-generator';
+import { IAssistant } from '@/models/IAssistant';
+import { ISection } from '@/models/ISection';
+import { Checkbox, Menu, MenuDropdown, MenuItem, Tooltip } from '@mantine/core';
+import { useDidUpdate } from '@mantine/hooks';
+import { FC, useCallback, useContext, useMemo, useState } from 'react';
 
 interface IMonthCellProps {
   dayIndex: number;
   assistant: IAssistant;
 }
 
-export const MonthCellRenderer: FC<IMonthCellProps> = ({dayIndex, assistant}) => {
-  const {monthConfig, sectionList, setAssistantList, selectedDayConfig, setSelectedDayConfig} =
+export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, assistant }) => {
+  const { monthConfig, sectionList, setAssistantList, selectedDayConfig, setSelectedDayConfig } =
     useContext(NobetContext);
   const [opened, setOpened] = useState(false);
   const getSelectedSection = () => {
@@ -29,6 +29,7 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({dayIndex, assistant}) =>
       (prev, curr) => prev + curr,
       0,
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [assistant.sectionConfig.version]);
 
   const filteredSectionList = useMemo(() => {
@@ -41,10 +42,14 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({dayIndex, assistant}) =>
       const isSectionReachedMax = assistantCountForSection === sectionDutyCount;
       return !isColumnSelectedByAnotherAssistant && !isSectionReachedMax;
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    selectedDayConfig[dayIndex]?.version,
-    assistant.selectedDays.version,
     assistant.sectionConfig.version,
+    assistant.selectedDays.version,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    selectedDayConfig[dayIndex]?.version,
+    dayIndex,
+    sectionList,
   ]);
 
   const isDisabled = useMemo(() => {
@@ -52,15 +57,18 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({dayIndex, assistant}) =>
     const isAllSectionsAreFull = filteredSectionList.length === 0;
     const isReachedMax = maxPossibleDutyCount === Object.keys(assistant.selectedDays.days).length;
     return (isDisabledDay || isAllSectionsAreFull || isReachedMax) && selectedSection == undefined;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
-    assistant.sectionConfig.version,
     assistant.disabledDays.version,
+    assistant.selectedDays.version,
+    dayIndex,
+    filteredSectionList.length,
     maxPossibleDutyCount,
-    filteredSectionList,
+    selectedSection,
   ]);
 
   useDidUpdate(() => {
-    const updatedAssistant = {...assistant};
+    const updatedAssistant = { ...assistant };
     if (selectedSection) updatedAssistant.selectedDays.days[dayIndex] = selectedSection;
     else delete updatedAssistant.selectedDays.days[dayIndex];
     updatedAssistant.selectedDays.version = GenerateUUID();
@@ -77,29 +85,35 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({dayIndex, assistant}) =>
     );
   }, [selectedSection?.id, monthConfig.numberOfRestDays]);
 
-  const onCheckboxChangeHandler = (isChecked: boolean) => {
-    setOpened(isChecked);
-    if (!isChecked) selectSection(undefined);
-  };
+  const selectSection = useCallback(
+    (section: ISection | undefined) => {
+      const dayConfig = { ...selectedDayConfig };
+      if (section) {
+        if (dayConfig[dayIndex]) dayConfig[dayIndex].sectionIds.add(section.id);
+        else dayConfig[dayIndex] ??= newSelectedDayConfig(section.id);
+      } else dayConfig[dayIndex].sectionIds.delete(selectedSection?.id ?? '');
 
-  const selectSection = (section: ISection | undefined) => {
-    const dayConfig = {...selectedDayConfig};
-    if (section) {
-      dayConfig[dayIndex] ??= newSelectedDayConfig(section.id);
-    } else {
-      dayConfig[dayIndex].sectionIds.delete(selectedSection?.id ?? '');
       dayConfig[dayIndex].version = GenerateUUID();
-    }
-    setSelectedSection(section);
-    setSelectedDayConfig(dayConfig);
-  };
+      setSelectedSection(section);
+      setSelectedDayConfig(dayConfig);
+    },
+    [dayIndex, selectedDayConfig, selectedSection?.id, setSelectedDayConfig],
+  );
+
+  const onCheckboxChangeHandler = useCallback(
+    (isChecked: boolean) => {
+      setOpened(isChecked);
+      if (!isChecked) selectSection(undefined);
+    },
+    [selectSection],
+  );
 
   const menuTarget = (
     <Menu.Target>
       <Tooltip
         disabled={!selectedSection}
         label={selectedSection?.name}
-        transitionProps={{transition: 'pop-bottom-right', duration: 300}}>
+        transitionProps={{ transition: 'pop-bottom-right', duration: 300 }}>
         <Checkbox
           checked={!!selectedSection}
           disabled={isDisabled}

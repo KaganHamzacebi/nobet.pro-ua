@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = {
-  plugins: ['prettier-plugin-tailwindcss'],
-  bracketSpacing: false,
+  plugins: ['prettier-plugin-organize-imports', 'prettier-plugin-tailwindcss'],
+  bracketSpacing: true,
   singleQuote: true,
   bracketSameLine: true,
   trailingComma: 'es5',

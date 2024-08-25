@@ -1,9 +1,9 @@
-import {NumberInput} from '@mantine/core';
-import {FC, useState} from 'react';
-import {IAssistant} from '@/models/IAssistant';
-import {ISection} from '@/models/ISection';
-import {useDebouncedCallback, useDidUpdate} from '@mantine/hooks';
-import {GenerateUUID} from '@/libs/helpers/id-generator';
+import { GenerateUUID } from '@/libs/helpers/id-generator';
+import { IAssistant } from '@/models/IAssistant';
+import { ISection } from '@/models/ISection';
+import { NumberInput } from '@mantine/core';
+import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
+import { FC, useState } from 'react';
 
 interface ISectionCellRendererProps {
   assistant: IAssistant;

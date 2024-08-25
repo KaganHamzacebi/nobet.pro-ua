@@ -1,9 +1,9 @@
-import {ActionIcon, TextInput, Tooltip} from '@mantine/core';
-import {FC, useState} from 'react';
-import {TrashSolidIcon} from '@/components/icons/TrashSolid';
-import {IAssistant} from '@/models/IAssistant';
-import {MRT_Row} from 'mantine-react-table';
-import {useDebouncedCallback, useDidUpdate} from '@mantine/hooks';
+import { TrashSolidIcon } from '@/components/icons/TrashSolid';
+import { IAssistant } from '@/models/IAssistant';
+import { ActionIcon, TextInput, Tooltip } from '@mantine/core';
+import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
+import { MRT_Row } from 'mantine-react-table';
+import { FC, useState } from 'react';
 
 interface IAssistantNameRendererProps {
   row: MRT_Row<IAssistant>;
@@ -19,7 +19,7 @@ export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({
   const [name, setName] = useState<string>(row.original.name);
 
   const setDebouncedName = useDebouncedCallback((name: string) => {
-    setAssistantProps(row.original.id, {name: name});
+    setAssistantProps(row.original.id, { name: name });
   }, 500);
 
   useDidUpdate(() => {

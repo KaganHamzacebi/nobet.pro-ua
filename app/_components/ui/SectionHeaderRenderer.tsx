@@ -1,9 +1,17 @@
-import {ActionIcon, ColorPicker, ColorSwatch, Group, Menu, TextInput, Tooltip} from '@mantine/core';
-import {ISection} from '@/models/ISection';
-import {ChangeEvent, FC, useCallback, useState} from 'react';
-import {TrashSolidIcon} from '@/components/icons/TrashSolid';
-import {useDebouncedCallback, useDidUpdate} from '@mantine/hooks';
-import {swatches} from '@/libs/helpers/color-generator';
+import { TrashSolidIcon } from '@/components/icons/TrashSolid';
+import { swatches } from '@/libs/helpers/color-generator';
+import { ISection } from '@/models/ISection';
+import {
+  ActionIcon,
+  ColorPicker,
+  ColorSwatch,
+  Group,
+  Menu,
+  TextInput,
+  Tooltip,
+} from '@mantine/core';
+import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
+import { ChangeEvent, FC, useCallback, useState } from 'react';
 
 interface ISectionHeaderRenderer {
   section: ISection;
@@ -16,26 +24,26 @@ export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
   setSectionProps,
   removeSection,
 }) => {
-  const [fields, setFields] = useState({color: section.color, name: section.name});
+  const [fields, setFields] = useState({ color: section.color, name: section.name });
 
   const setDebouncedFields = useDebouncedCallback((props: Partial<ISection>) => {
     setSectionProps(section.id, props);
   }, 500);
 
   useDidUpdate(() => {
-    setDebouncedFields({color: fields.color});
+    setDebouncedFields({ color: fields.color });
   }, [fields.color]);
 
   useDidUpdate(() => {
-    setDebouncedFields({name: fields.name});
+    setDebouncedFields({ name: fields.name });
   }, [fields.name]);
 
   const handleColorChange = useCallback((color: string) => {
-    setFields(prev => ({...prev, color}));
+    setFields(prev => ({ ...prev, color }));
   }, []);
 
   const handleNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setFields(prev => ({...prev, name: event.target.value}));
+    setFields(prev => ({ ...prev, name: event.target.value }));
   }, []);
 
   return (
