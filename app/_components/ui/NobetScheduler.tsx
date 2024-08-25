@@ -43,7 +43,6 @@ export function NobetScheduler() {
   const [screenMode, setScreenMode] = useState<ScreenMode>(ScreenMode.MonthPicker);
   const [assistantList, setAssistantList] = useState<IAssistant[]>(DefaultAssistantList);
   const [sectionList, setSectionList] = useState<ISection[]>(DefaultSectionList);
-  const [, setSectionRenderer] = useState<boolean>(false);
   const [selectedDayConfig, setSelectedDayConfig] = useState<SelectedDayConfig>({});
 
   const contextValue = useMemo(
@@ -109,12 +108,10 @@ export function NobetScheduler() {
         },
       })),
     );
-    setSectionRenderer(prev => !prev);
   }, [sectionList.length]);
 
   const removeSection = useCallback((sectionId: ISection['id']) => {
     setSectionList(prevState => prevState.filter(i => i.id !== sectionId));
-    setSectionRenderer(prev => !prev);
   }, []);
 
   const setSectionProps = useCallback((sectionId: ISection['id'], props: Partial<ISection>) => {
