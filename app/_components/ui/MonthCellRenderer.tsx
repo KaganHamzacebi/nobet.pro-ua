@@ -66,12 +66,10 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, assistant }) 
 
   const onCheckboxChangeHandler = (isChecked: boolean) => {
     setOpened(isChecked);
-    if (!isChecked) {
-      selectSection(undefined);
-    }
+    if (!isChecked) selectSection(undefined);
   };
 
-  const selectSection = (section?: ISection) => {
+  const selectSection = (section: ISection | undefined) => {
     const dayConfig = { ...selectedDayConfig };
     if (section) {
       dayConfig[dayIndex] ??= newSelectedDayConfig(section.id);

@@ -37,6 +37,16 @@ export function NobetScheduler() {
   const [sectionRenderer, setSectionRenderer] = useState<boolean>(false);
   const [selectedDayConfig, setSelectedDayConfig] = useState<SelectedDayConfig>({});
 
+  const contextValue = useMemo(() => ({
+    monthConfig,
+    assistantList,
+    setAssistantList,
+    sectionList,
+    setSectionList,
+    selectedDayConfig,
+    setSelectedDayConfig
+  }), [monthConfig, assistantList, sectionList, selectedDayConfig]);
+
   useEffect(() => {
     onDateChange(new Date());
   }, []);
@@ -183,15 +193,7 @@ export function NobetScheduler() {
 
   return (
     <NobetContext.Provider
-      value={{
-        monthConfig,
-        assistantList,
-        setAssistantList,
-        sectionList,
-        setSectionList,
-        selectedDayConfig,
-        setSelectedDayConfig
-      }}>
+      value={contextValue}>
       <div className="w-full h-full">
         <div className="flex flex-row gap-x-4">
           <MonthPickerInput minDate={dayjs().toDate()}
