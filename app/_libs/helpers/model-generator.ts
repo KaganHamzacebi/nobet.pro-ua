@@ -8,9 +8,16 @@ export const newAssistant = (name?: string): IAssistant => {
   return {
     id: GenerateUUID(),
     name: name ?? 'New Assistant',
-    selectedDays: [],
-    disabledDays: [],
-    sectionConfig: []
+    selectedDays: {
+      days: []
+    },
+    disabledDays: {
+      days: []
+    },
+    sectionConfig: {
+      counts: {},
+      version: GenerateUUID()
+    }
   };
 };
 
@@ -22,9 +29,9 @@ export const newSection = (sectionName?: string): ISection => {
   };
 };
 
-export const newSelectedDayConfig = (): SelectedDayConfig[number] => {
+export const newSelectedDayConfig = (sectionId: string): SelectedDayConfig[number] => {
   return {
-    sectionIds: new Set<string>(),
+    sectionIds: new Set<string>([sectionId]),
     version: GenerateUUID()
   };
 };

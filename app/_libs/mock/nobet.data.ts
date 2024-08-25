@@ -1,10 +1,10 @@
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { MonthConfig } from '@/models/MonthConfig';
-import moment from 'moment/moment';
 import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
 import { IAssistant } from '@/models/IAssistant';
 import { ISection } from '@/models/ISection';
 import { newAssistant } from '@/libs/helpers/model-generator';
+import dayjs from 'dayjs';
 
 const DefaultSection: ISection = {
   id: GenerateUUID(),
@@ -18,7 +18,7 @@ const DefaultSectionList: ISection[] = [DefaultSection];
 const DefaultAssistantList: IAssistant[] = [DefaultAssistant];
 
 const DefaultMonthConfig: MonthConfig = {
-  datesInMonth: moment(new Date()).daysInMonth(),
+  datesInMonth: dayjs(new Date()).daysInMonth(),
   weekendIndexes: getWeekendDayIndexes(new Date()),
   numberOfRestDays: 2
 };

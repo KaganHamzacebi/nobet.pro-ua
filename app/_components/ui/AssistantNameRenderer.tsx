@@ -1,36 +1,38 @@
-import { ActionIcon, TextInput } from '@mantine/core';
-import { FC, useEffect, useState } from 'react';
+import { ActionIcon, TextInput, Tooltip } from '@mantine/core';
+import { FC, useState } from 'react';
 import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { IAssistant } from '@/models/IAssistant';
 import { MRT_Row } from 'mantine-react-table';
-import { useDebouncedCallback } from '@mantine/hooks';
+import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
 
 interface IAssistantNameRendererProps {
   row: MRT_Row<IAssistant>;
-  setAssistantName: (id: string, name: string) => void;
+  setAssistantProps: (id: string, props: Partial<IAssistant>) => void;
   removeAssistant: (id: IAssistant['id']) => void;
 }
 
-export const AssistantNameRenderer: FC<IAssistantNameRendererProps> =
-  ({ row, setAssistantName, removeAssistant }) => {
-    const [name, setName] = useState<string>(row.original.name);
-    const setDebouncedName = useDebouncedCallback((name: string) => {
-      setAssistantName(row.original.id, name);
-    }, 500);
+export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({ row, setAssistantProps, removeAssistant }) => {
+  const [name, setName] = useState<string>(row.original.name);
 
-    useEffect(() => {
-      setDebouncedName(name);
-    }, [name]);
+  const setDebouncedName = useDebouncedCallback((name: string) => {
+    setAssistantProps(row.original.id, { name: name });
+  }, 500);
 
-    return (
-      <div className="flex flex-row gap-x-2 items-center">
-        <TextInput size="xs"
-                   value={name}
-                   onChange={(e) => setName(e.target.value)}
-        />
+  useDidUpdate(() => {
+    setDebouncedName(name);
+  }, [name]);
+
+  return (
+    <div className="flex flex-row gap-x-2 items-center">
+      <TextInput size="xs"
+                 value={name}
+                 onChange={(e) => setName(e.target.value)}
+      />
+      <Tooltip label={`Remove ${name}`}>
         <ActionIcon size="sm" variant="transparent" onClick={() => removeAssistant(row.original.id)}>
           <TrashSolidIcon className="text-attention hover:text-attention-hover" />
         </ActionIcon>
-      </div>
-    );
-  };
+      </Tooltip>
+    </div>
+  );
+};

@@ -1,18 +1,15 @@
-import moment from 'moment';
+import dayjs from 'dayjs';
 
-export const getWeekendDayIndexes = (date: Date) => {
-  const weekends = [];
-  const [year, month] = [date.getFullYear(), date.getMonth() + 1];
-  const startOfMonth = moment([year, month - 1]);
-  const endOfMonth = startOfMonth.clone().endOf('month');
+export const getWeekendDayIndexes = (date: Date): number[] => {
+  const weekends: number[] = [];
+  const startOfMonth = dayjs(date).startOf('month');
+  const daysInMonth = startOfMonth.daysInMonth();
 
-  const day = startOfMonth;
-
-  while (day <= endOfMonth) {
-    if (day.day() === 6 || day.day() === 0) { // 6 is Saturday, 0 is Sunday
-      weekends.push(day.date());
+  for (let day = 1; day <= daysInMonth; day++) {
+    const currentDay = startOfMonth.date(day);
+    if (currentDay.day() === 6 || currentDay.day() === 0) { // 6 is Saturday, 0 is Sunday
+      weekends.push(day);
     }
-    day.add(1, 'day');
   }
 
   return weekends;

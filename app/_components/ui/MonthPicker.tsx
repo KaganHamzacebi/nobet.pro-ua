@@ -26,7 +26,6 @@ export const MonthPicker: FC<IMonthPickerProps> = memo(({ assistantList }) => {
               <MonthCellRenderer key={i}
                                  dayIndex={i + 1}
                                  assistant={assistant}
-                                 isWeekend={monthConfig.weekendIndexes.includes(i + 1)}
               />
             </Table.Td>
           ))
