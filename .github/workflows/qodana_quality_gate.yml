@@ -3,7 +3,11 @@ on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: [development, production]
+    branches:
+      - development
+      - production
+      - 'bugfix/*'
+      - 'feature/*'
 jobs:
   qodana:
     runs-on: ubuntu-latest
