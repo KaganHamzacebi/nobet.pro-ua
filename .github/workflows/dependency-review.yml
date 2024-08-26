@@ -10,7 +10,7 @@
 name: 'Dependency review'
 on:
   pull_request:
-    branches: [ "development", "production", "feature/*", "bugfix/*" ]
+    branches: [ "development", "production" ]
     paths:
       - 'package.json'
       - 'pnpm-lock.yaml'
