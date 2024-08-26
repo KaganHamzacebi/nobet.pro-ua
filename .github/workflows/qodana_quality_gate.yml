@@ -22,7 +22,5 @@ jobs:
           fetch-depth: 0
       - name: 'Qodana Scan'
         uses: JetBrains/qodana-action@v2024.1
-        with:
-          args: --cloud # Explicitly tell Qodana to use the cloud
         env:
           QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
