@@ -1,34 +1,25 @@
 'use client';
 
 import CalendarIcon from '@/components/icons/Calendar';
-import { TrashSolidIcon } from '@/components/icons/TrashSolid';
-import { AddButton } from '@/components/ui/AddButton';
-import { AssistantNameRenderer } from '@/components/ui/AssistantNameRenderer';
-import { MonthCellRenderer } from '@/components/ui/MonthCellRenderer';
-import { SectionCellRenderer } from '@/components/ui/SectionCellRenderer';
-import { SectionHeaderRenderer } from '@/components/ui/SectionHeaderRenderer';
-import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
-import { GenerateUUID } from '@/libs/helpers/id-generator';
-import { newAssistant, newSection } from '@/libs/helpers/model-generator';
-import {
-  DefaultAssistantList,
-  DefaultMonthConfig,
-  DefaultSectionList,
-} from '@/libs/mock/nobet.data';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
-import { MonthConfig } from '@/models/MonthConfig';
-import { DefaultNobetContext, INobetContext, SelectedDayConfig } from '@/models/NobetContext';
-import { Button, NumberInput, SegmentedControl } from '@mantine/core';
-import { MonthPickerInput } from '@mantine/dates';
+import {TrashSolidIcon} from '@/components/icons/TrashSolid';
+import {AddButton} from '@/components/ui/AddButton';
+import {AssistantNameRenderer} from '@/components/ui/AssistantNameRenderer';
+import {MonthCellRenderer} from '@/components/ui/MonthCellRenderer';
+import {SectionCellRenderer} from '@/components/ui/SectionCellRenderer';
+import {SectionHeaderRenderer} from '@/components/ui/SectionHeaderRenderer';
+import {getWeekendDayIndexes} from '@/libs/helpers/get-weekend-indexes';
+import {GenerateUUID} from '@/libs/helpers/id-generator';
+import {newAssistant, newSection} from '@/libs/helpers/model-generator';
+import {DefaultAssistantList, DefaultMonthConfig, DefaultSectionList,} from '@/libs/mock/nobet.data';
+import {IAssistant} from '@/models/IAssistant';
+import {ISection} from '@/models/ISection';
+import {MonthConfig} from '@/models/MonthConfig';
+import {DefaultNobetContext, INobetContext, SelectedDayConfig} from '@/models/NobetContext';
+import {Button, NumberInput, SegmentedControl} from '@mantine/core';
+import {MonthPickerInput} from '@mantine/dates';
 import dayjs from 'dayjs';
-import {
-  MantineReactTable,
-  MRT_ColumnDef,
-  MRT_Row,
-  useMantineReactTable,
-} from 'mantine-react-table';
-import { createContext, useCallback, useMemo, useState, useTransition } from 'react';
+import {MantineReactTable, MRT_ColumnDef, MRT_Row, useMantineReactTable,} from 'mantine-react-table';
+import {createContext, useCallback, useMemo, useState, useTransition} from 'react';
 
 enum ScreenMode {
   MonthPicker = 'MonthPicker',
@@ -74,7 +65,7 @@ export function NobetScheduler() {
       setAssistantList(prevState => prevState.filter(assistant => assistant.id !== assistantId));
       const assistantSelectedDays = assistantList.find(assistant => assistant.id !== assistantId)
         ?.selectedDays.days;
-      const updatedSelectedDayConfig = { ...selectedDayConfig };
+      const updatedSelectedDayConfig = {...selectedDayConfig};
       if (assistantSelectedDays) {
         Object.entries(assistantSelectedDays).forEach(([dayIndex, section]) => {
           updatedSelectedDayConfig[Number(dayIndex)].sectionIds.delete(section.id);
@@ -90,7 +81,7 @@ export function NobetScheduler() {
     (assistantId: IAssistant['id'], props: Partial<IAssistant>) => {
       setAssistantList(prevState =>
         prevState.map(assistant =>
-          assistant.id === assistantId ? { ...assistant, ...props } : assistant,
+          assistant.id === assistantId ? {...assistant, ...props} : assistant,
         ),
       );
     },
@@ -116,7 +107,7 @@ export function NobetScheduler() {
 
   const setSectionProps = useCallback((sectionId: ISection['id'], props: Partial<ISection>) => {
     setSectionList(prevState =>
-      prevState.map(section => (section.id === sectionId ? { ...section, ...props } : section)),
+      prevState.map(section => (section.id === sectionId ? {...section, ...props} : section)),
     );
   }, []);
 
@@ -147,7 +138,7 @@ export function NobetScheduler() {
       {
         accessorKey: 'name',
         header: 'Assistant',
-        Cell: ({ row }) => (
+        Cell: ({row}) => (
           <AssistantNameRenderer
             row={row}
             setAssistantProps={setAssistantProps}
@@ -156,40 +147,45 @@ export function NobetScheduler() {
         ),
       },
       ...(screenMode === ScreenMode.MonthPicker
-        ? Array.from({ length: monthConfig.datesInMonth }).map(
-            (_, index) =>
-              ({
-                size: 30,
-                header: String(index + 1),
-                mantineTableHeadCellProps: {
-                  className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
-                },
-                mantineTableBodyCellProps: {
-                  className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
-                },
-                Cell: ({ row }) => (
-                  <MonthCellRenderer dayIndex={index + 1} assistant={row.original} />
+        ? Array.from({length: monthConfig.datesInMonth}).map(
+          (_, index) =>
+            ({
+              id: GenerateUUID(),
+              size: 30,
+              mantineTableHeadCellProps: ({}) => ({
+                className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
+                children: (
+                  <div style={{display: 'flex', justifyContent: 'center'}}>
+                    <span>{String(index + 1)}</span>
+                  </div>
                 ),
-              }) as MRT_ColumnDef<IAssistant>,
-          )
+              }),
+              mantineTableBodyCellProps: {
+                className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
+              },
+              Cell: ({row}) => (
+                <MonthCellRenderer dayIndex={index + 1} assistant={row.original}/>
+              ),
+            }) as MRT_ColumnDef<IAssistant>,
+        )
         : sectionList.map(section => ({
-            id: section.id,
-            header: 'Section',
-            Header: () => (
-              <SectionHeaderRenderer
-                section={section}
-                setSectionProps={setSectionProps}
-                removeSection={removeSection}
-              />
-            ),
-            Cell: ({ row }: { row: MRT_Row<IAssistant> }) => (
-              <SectionCellRenderer
-                assistant={row.original}
-                section={section}
-                setAssistantProps={setAssistantProps}
-              />
-            ),
-          }))),
+          id: section.id,
+          header: 'Section',
+          Header: () => (
+            <SectionHeaderRenderer
+              section={section}
+              setSectionProps={setSectionProps}
+              removeSection={removeSection}
+            />
+          ),
+          Cell: ({row}: { row: MRT_Row<IAssistant> }) => (
+            <SectionCellRenderer
+              assistant={row.original}
+              section={section}
+              setAssistantProps={setAssistantProps}
+            />
+          ),
+        }))),
     ],
     [
       monthConfig.datesInMonth,
@@ -212,14 +208,13 @@ export function NobetScheduler() {
     enableColumnActions: false,
     enableColumnPinning: true,
     initialState: {
-      columnPinning: { left: ['name'] },
+      columnPinning: {left: ['name']},
       density: 'xs',
     },
     mantineTableProps: {
-      striped: 'even',
       withColumnBorders: true,
     },
-    state: { isLoading: isPending },
+    state: {isLoading: isPending},
     getRowId: row => row.id,
   });
 
@@ -234,7 +229,7 @@ export function NobetScheduler() {
             onChange={onDateChange}
             defaultValue={new Date()}
             label="Pick Month"
-            leftSection={<CalendarIcon />}
+            leftSection={<CalendarIcon/>}
             leftSectionPointerEvents="none"
             className="w-[10rem]"
           />
@@ -252,23 +247,23 @@ export function NobetScheduler() {
               onChange={e => changeScreenMode(e as ScreenMode)}
               color="yellow"
               data={[
-                { label: 'Month Picker', value: ScreenMode.MonthPicker },
-                { label: 'Section Editor', value: ScreenMode.SectionEditor },
+                {label: 'Month Picker', value: ScreenMode.MonthPicker},
+                {label: 'Section Editor', value: ScreenMode.SectionEditor},
               ]}
             />
           </div>
         </div>
         <div className="mt-2">
-          <MantineReactTable<IAssistant> table={table} />
+          <MantineReactTable<IAssistant> table={table}/>
         </div>
         <div className="mt-4 flex flex-row gap-x-4">
-          <AddButton label="Add Assistant" onClick={addAssistant} />
+          <AddButton label="Add Assistant" onClick={addAssistant}/>
           {screenMode === ScreenMode.SectionEditor && (
-            <AddButton label="Add New Section" onClick={addSection} />
+            <AddButton label="Add New Section" onClick={addSection}/>
           )}
           {screenMode === ScreenMode.MonthPicker && (
             <Button
-              leftSection={<TrashSolidIcon className="size-4" />}
+              leftSection={<TrashSolidIcon className="size-4"/>}
               className="bg-attention hover:bg-attention-hover">
               Clear Selections
             </Button>
