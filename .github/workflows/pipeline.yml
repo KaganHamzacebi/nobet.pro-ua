@@ -29,7 +29,7 @@ jobs:
       - name: Install Depdendencies
         run: pnpm install
       - name: Run Tests
-        run: pnpm test
+        run: pnpm run test
       - name: Upload Test Results
         if: success()
         uses: actions/upload-artifact@v4
