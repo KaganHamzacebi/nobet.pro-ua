@@ -1,6 +1,0 @@
-version: "1.0"
-profile: "default"
-exclude:
-  - "node_modules"
-  - "build"
-  - "dist"
