@@ -1,12 +1,9 @@
-name: Qodana
+name: Qodana QualityGate
 on:
   workflow_dispatch:
   pull_request:
   push:
-    branches: # Specify your branches here
-      - development
-      - production
-
+    branches: [development, production]
 jobs:
   qodana:
     runs-on: ubuntu-latest
