@@ -11,9 +11,14 @@ import { FC, useCallback, useContext, useMemo, useState } from 'react';
 interface IMonthCellProps {
   dayIndex: number;
   assistant: IAssistant;
+  clearSelectionsTrigger: boolean;
 }
 
-export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, assistant }) => {
+export const MonthCellRenderer: FC<IMonthCellProps> = ({
+  dayIndex,
+  assistant,
+  clearSelectionsTrigger,
+}) => {
   const { monthConfig, sectionList, setAssistantList, selectedDayConfig, setSelectedDayConfig } =
     useContext(NobetContext);
   const [opened, setOpened] = useState(false);
@@ -84,6 +89,10 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({ dayIndex, assistant }) 
       ),
     );
   }, [selectedSection?.id, monthConfig.numberOfRestDays]);
+
+  useDidUpdate(() => {
+    setSelectedSection(undefined);
+  }, [clearSelectionsTrigger]);
 
   const selectSection = useCallback(
     (section: ISection | undefined) => {

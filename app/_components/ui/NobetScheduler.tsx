@@ -39,6 +39,7 @@ export const NobetContext = createContext<INobetContext>(DefaultNobetContext);
 
 export function NobetScheduler() {
   const [isPending, startTransition] = useTransition();
+  const [clearSelectionsTrigger, setClearSelectionsTrigger] = useState<boolean>(false);
   const [monthConfig, setMonthConfig] = useState<MonthConfig>(DefaultMonthConfig);
   const [screenMode, setScreenMode] = useState<ScreenMode>(ScreenMode.MonthPicker);
   const [assistantList, setAssistantList] = useState<IAssistant[]>(DefaultAssistantList);
@@ -120,6 +121,22 @@ export function NobetScheduler() {
     );
   }, []);
 
+  const handleClearSelections = () => {
+    setAssistantList(prevState =>
+      prevState.map(assistant => ({
+        ...assistant,
+        selectedDays: {
+          days: [],
+        },
+        disabledDays: {
+          days: [],
+        },
+      })),
+    );
+    setSelectedDayConfig({});
+    setClearSelectionsTrigger(prev => !prev);
+  };
+
   const onDateChange = useCallback(
     (date: Date | null) => {
       if (date == null) return;
@@ -173,7 +190,11 @@ export function NobetScheduler() {
                   className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
                 },
                 Cell: ({ row }) => (
-                  <MonthCellRenderer dayIndex={index + 1} assistant={row.original} />
+                  <MonthCellRenderer
+                    dayIndex={index + 1}
+                    assistant={row.original}
+                    clearSelectionsTrigger={clearSelectionsTrigger}
+                  />
                 ),
               }) as MRT_ColumnDef<IAssistant>,
           )
@@ -273,6 +294,7 @@ export function NobetScheduler() {
           {screenMode === ScreenMode.MonthPicker && (
             <Button
               leftSection={<TrashSolidIcon className="size-4" />}
+              onClick={handleClearSelections}
               className="bg-attention hover:bg-attention-hover">
               Clear Selections
             </Button>
