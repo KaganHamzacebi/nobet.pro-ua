@@ -176,11 +176,16 @@ export function NobetScheduler() {
         ? Array.from({ length: monthConfig.datesInMonth }).map(
             (_, index) =>
               ({
+                id: GenerateUUID(),
                 size: 30,
-                header: String(index + 1),
-                mantineTableHeadCellProps: {
+                mantineTableHeadCellProps: _ => ({
                   className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
-                },
+                  children: (
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <span>{String(index + 1)}</span>
+                    </div>
+                  ),
+                }),
                 mantineTableBodyCellProps: {
                   className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
                 },
@@ -237,7 +242,6 @@ export function NobetScheduler() {
       density: 'xs',
     },
     mantineTableProps: {
-      striped: 'even',
       withColumnBorders: true,
     },
     state: { isLoading: isPending },
