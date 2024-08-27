@@ -17,7 +17,7 @@ updates:
       - "kaganhamzacebi"
 
     # Maintain dependencies for pnpm
-  - package-ecosystem: "pnpm"
+  - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "weekly"
