@@ -161,7 +161,7 @@ export function NobetScheduler() {
               ({
                 id: GenerateUUID(),
                 size: 30,
-                mantineTableHeadCellProps: ({}) => ({
+                mantineTableHeadCellProps: () => ({
                   className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
                   children: (
                     <div style={{ display: 'flex', justifyContent: 'center' }}>
