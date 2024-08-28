@@ -94,10 +94,10 @@ const config: Config = {
         secret: '#ED3E41',
         topsecret: '#FFAA00',
         splitBorder: '#4a5563',
-        splitBorderLight: '#e5e7eb',
-      },
-    },
+        splitBorderLight: '#e5e7eb'
+      }
+    }
   },
-  plugins: [],
+  plugins: []
 };
 export default config;

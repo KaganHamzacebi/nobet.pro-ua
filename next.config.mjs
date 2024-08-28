@@ -2,8 +2,8 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
-  },
+    optimizePackageImports: ['@mantine/core', '@mantine/hooks']
+  }
 };
 
 export default nextConfig;

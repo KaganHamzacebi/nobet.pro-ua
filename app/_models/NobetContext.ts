@@ -1,7 +1,7 @@
 import {
   DefaultAssistantList,
   DefaultMonthConfig,
-  DefaultSectionList,
+  DefaultSectionList
 } from '@/libs/mock/nobet.data';
 import { IAssistant } from '@/models/IAssistant';
 import { ISection } from '@/models/ISection';
@@ -34,5 +34,5 @@ export const DefaultNobetContext: INobetContext = {
   assistantList: DefaultAssistantList,
   setAssistantList: () => {},
   selectedDayConfig: {},
-  setSelectedDayConfig: () => {},
+  setSelectedDayConfig: () => {}
 };

@@ -8,15 +8,20 @@ import { FC, useState } from 'react';
 interface ISectionCellRendererProps {
   assistant: IAssistant;
   section: ISection;
-  setAssistantProps: (assistantId: IAssistant['id'], props: Partial<IAssistant>) => void;
+  setAssistantProps: (
+    assistantId: IAssistant['id'],
+    props: Partial<IAssistant>
+  ) => void;
 }
 
 export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
   assistant,
   section,
-  setAssistantProps,
+  setAssistantProps
 }) => {
-  const [count, setCount] = useState<number>(assistant.sectionConfig.counts[section.id] ?? 0);
+  const [count, setCount] = useState<number>(
+    assistant.sectionConfig.counts[section.id] ?? 0
+  );
 
   const setAssistantSectionConfig = useDebouncedCallback((count: number) => {
     setAssistantProps(assistant.id, {
@@ -24,10 +29,10 @@ export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
         ...assistant.sectionConfig,
         counts: {
           ...assistant.sectionConfig.counts,
-          [section.id]: count,
+          [section.id]: count
         },
-        version: GenerateUUID(),
-      },
+        version: GenerateUUID()
+      }
     });
   }, 500);
 
