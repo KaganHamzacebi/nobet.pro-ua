@@ -44,6 +44,7 @@ export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
     return Object.values(assistant.selectedDays.days).filter(
       s => s.id === section.id
     ).length;
+    // eslint-disable-next-line
   }, [assistant.selectedDays.version]);
 
   return (

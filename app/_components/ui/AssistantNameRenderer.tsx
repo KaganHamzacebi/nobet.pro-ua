@@ -19,7 +19,7 @@ export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({
   const [name, setName] = useState<string>(row.original.name);
 
   const setDebouncedName = useDebouncedCallback((name: string) => {
-    setAssistantProps(row.original.id, { name: name });
+    setAssistantProps(row.original.id, { name });
   }, 500);
 
   useDidUpdate(() => {

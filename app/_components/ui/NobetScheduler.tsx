@@ -261,7 +261,7 @@ export function NobetScheduler() {
   );
 
   const table = useMantineReactTable({
-    columns: columns,
+    columns,
     data: assistantList,
     enableTopToolbar: false,
     enableBottomToolbar: false,
