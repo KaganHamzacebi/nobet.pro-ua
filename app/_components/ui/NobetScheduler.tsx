@@ -180,6 +180,10 @@ export function NobetScheduler() {
     [monthConfig]
   );
 
+  const isRestDayDisabled = useMemo(() => {
+    return assistantList.some(a => Object.keys(a.selectedDays.days).length > 0);
+  }, [assistantList]);
+
   const setNumberOfRestDays = useCallback(
     (numberOfRestDays: string | number) => {
       setMonthConfig({
@@ -207,7 +211,8 @@ export function NobetScheduler() {
         ? Array.from({ length: monthConfig.datesInMonth }).map(
             (_, index) =>
               ({
-                id: GenerateUUID(),
+                id: String(index + 1),
+                header: 'Month',
                 size: 30,
                 mantineTableHeadCellProps: _ => ({
                   className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
@@ -249,6 +254,7 @@ export function NobetScheduler() {
           })))
     ],
     [
+      clearSelectionsTrigger,
       monthConfig.datesInMonth,
       monthConfig.weekendIndexes,
       removeAssistant,
@@ -299,8 +305,11 @@ export function NobetScheduler() {
             label="Number of Rest days"
             value={monthConfig.numberOfRestDays}
             onChange={setNumberOfRestDays}
+            min={0}
+            disabled={isRestDayDisabled}
+            clampBehavior="strict"
             allowNegative={false}
-            max={monthConfig.datesInMonth}
+            allowDecimal={false}
           />
           <div className="ml-auto mt-auto">
             <SegmentedControl
