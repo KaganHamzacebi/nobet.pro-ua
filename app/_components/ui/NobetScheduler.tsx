@@ -207,7 +207,8 @@ export function NobetScheduler() {
         ? Array.from({ length: monthConfig.datesInMonth }).map(
             (_, index) =>
               ({
-                id: GenerateUUID(),
+                id: String(index + 1),
+                header: 'Month',
                 size: 30,
                 mantineTableHeadCellProps: _ => ({
                   className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
