@@ -9,7 +9,7 @@ import dayjs from 'dayjs';
 const DefaultSection: ISection = {
   id: GenerateUUID(),
   name: 'War Room',
-  color: '#53a83e',
+  color: '#53a83e'
 };
 
 const DefaultAssistant: IAssistant = newAssistant('Kel Mahmut');
@@ -20,7 +20,7 @@ const DefaultAssistantList: IAssistant[] = [DefaultAssistant];
 const DefaultMonthConfig: MonthConfig = {
   datesInMonth: dayjs(new Date()).daysInMonth(),
   weekendIndexes: getWeekendDayIndexes(new Date()),
-  numberOfRestDays: 2,
+  numberOfRestDays: 2
 };
 
 export { DefaultAssistantList, DefaultMonthConfig, DefaultSectionList };
