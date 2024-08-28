@@ -24,7 +24,7 @@ jobs:
       - name: Install Dependencies
         run: pnpm install
       - name: Build
-        run: pnpm build
+        run: pnpm build:no-lint
 
   lint:
     runs-on: ubuntu-latest
