@@ -1,0 +1,6 @@
+.next
+.cache
+.github
+pnpm-lock.yaml
+public
+node_modules

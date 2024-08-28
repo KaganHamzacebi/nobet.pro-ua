@@ -14,7 +14,7 @@ interface IAssistantNameRendererProps {
 export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({
   row,
   setAssistantProps,
-  removeAssistant,
+  removeAssistant
 }) => {
   const [name, setName] = useState<string>(row.original.name);
 
@@ -28,7 +28,11 @@ export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({
 
   return (
     <div className="flex flex-row items-center gap-x-2">
-      <TextInput size="xs" value={name} onChange={e => setName(e.target.value)} />
+      <TextInput
+        size="xs"
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
       <Tooltip label={`Remove ${name}`}>
         <ActionIcon
           size="sm"
