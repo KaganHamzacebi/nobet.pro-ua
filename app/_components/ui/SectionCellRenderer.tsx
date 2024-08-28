@@ -3,7 +3,7 @@ import { IAssistant } from '@/models/IAssistant';
 import { ISection } from '@/models/ISection';
 import { NumberInput } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 interface ISectionCellRendererProps {
   assistant: IAssistant;
@@ -35,12 +35,17 @@ export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
     setAssistantSectionConfig(count);
   }, [count]);
 
+  const minimumDoableDuty = useMemo(() => {
+    return Object.values(assistant.selectedDays.days).filter(s => s.id === section.id).length
+  }, [assistant.selectedDays.version])
+
   return (
     <div className="w-full min-w-[200px]">
       <NumberInput
         value={count}
         onChange={e => setCount(Number(e))}
         size="xs"
+        min={minimumDoableDuty}
         allowNegative={false}
       />
     </div>
