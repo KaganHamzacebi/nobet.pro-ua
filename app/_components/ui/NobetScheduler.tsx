@@ -1,8 +1,8 @@
 'use client';
 
 import CalendarIcon from '@/components/icons/Calendar';
-import {TrashSolidIcon } from '@/components/icons/TrashSolid';
-import {AddButton } from '@/components/ui/AddButton';
+import { TrashSolidIcon } from '@/components/icons/TrashSolid';
+import { AddButton } from '@/components/ui/AddButton';
 import { AssistantNameRenderer } from '@/components/ui/AssistantNameRenderer';
 import { MonthCellRenderer } from '@/components/ui/MonthCellRenderer';
 import { SectionCellRenderer } from '@/components/ui/SectionCellRenderer';
