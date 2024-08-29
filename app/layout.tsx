@@ -24,6 +24,7 @@ export default function RootLayout({
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
+        <script src="https://accounts.google.com/gsi/client" async></script>
       </head>
       <body className={inter.className}>
         <Providers>{children}</Providers>
