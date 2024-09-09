@@ -9,7 +9,7 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: "development"
     commit-message:
       prefix: "[github-actions]"
@@ -20,7 +20,7 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
     target-branch: "development"
     commit-message:
       prefix: "[pnpm]"
