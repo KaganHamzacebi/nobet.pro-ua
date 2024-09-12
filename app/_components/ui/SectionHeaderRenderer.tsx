@@ -11,7 +11,15 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
-import { ChangeEvent, FC, useCallback, useState } from 'react';
+import {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useContext,
+  useMemo,
+  useState
+} from 'react';
+import { NobetContext } from './NobetScheduler';
 
 interface ISectionHeaderRenderer {
   section: ISection;
@@ -22,11 +30,19 @@ interface ISectionHeaderRenderer {
   removeSection: (sectionId: ISection['id']) => void;
 }
 
+const getBackgroundClass = (totalDayCount: number, datesInMonth: number) => {
+  if (totalDayCount < datesInMonth) return 'bg-onyx';
+  if (totalDayCount === datesInMonth) return 'bg-success';
+  return 'bg-attention-700';
+};
+
 export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
   section,
   setSectionProps,
   removeSection
 }) => {
+  const { monthConfig, assistantList } = useContext(NobetContext);
+
   const [fields, setFields] = useState({
     color: section.color,
     name: section.name
@@ -38,6 +54,13 @@ export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
     },
     500
   );
+
+  const totalDayCount = useMemo(() => {
+    return assistantList.reduce((prev, curr) => {
+      prev += curr.sectionConfig.counts[section.id] ?? 0;
+      return prev;
+    }, 0);
+  }, [assistantList]);
 
   useDidUpdate(() => {
     setDebouncedFields({ color: fields.color });
@@ -81,6 +104,10 @@ export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
           <TrashSolidIcon className="text-attention hover:text-attention-hover" />
         </ActionIcon>
       </Tooltip>
+      <div
+        className={`flex flex-row gap-x-1 rounded px-2 py-1 ${getBackgroundClass(totalDayCount, monthConfig.datesInMonth)}`}>
+        <span>{totalDayCount}</span>/<span>{monthConfig.datesInMonth}</span>
+      </div>
     </Group>
   );
 };
