@@ -7,6 +7,7 @@ import { IAssistant } from '@/models/IAssistant';
 import { ISection } from '@/models/ISection';
 import { MonthConfig } from '@/models/MonthConfig';
 import { Dispatch, SetStateAction } from 'react';
+import { ScreenMode } from './ScreenMode';
 
 // Stores data by DayIndex
 export type SelectedDayConfig = Record<
@@ -18,6 +19,7 @@ export type SelectedDayConfig = Record<
 >;
 
 export interface INobetContext {
+  screenMode: ScreenMode;
   monthConfig: MonthConfig;
   sectionList: ISection[];
   setSectionList: (sectionList: ISection[]) => void;
@@ -28,6 +30,7 @@ export interface INobetContext {
 }
 
 export const DefaultNobetContext: INobetContext = {
+  screenMode: ScreenMode.MonthPicker,
   monthConfig: DefaultMonthConfig,
   sectionList: DefaultSectionList,
   setSectionList: () => {},

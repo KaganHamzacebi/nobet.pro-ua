@@ -1,3 +1,4 @@
+import { ScreenMode } from '@/app/_models/ScreenMode';
 import { NobetContext } from '@/components/ui/NobetScheduler';
 import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
@@ -20,6 +21,7 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
   clearSelectionsTrigger
 }) => {
   const {
+    screenMode,
     monthConfig,
     sectionList,
     setAssistantList,
@@ -141,8 +143,6 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
         transitionProps={{ transition: 'pop-bottom-right', duration: 300 }}>
         <Checkbox
           checked={!!selectedSection}
-          disabled={isDisabled}
-          indeterminate={isDisabled}
           onChange={e => onCheckboxChangeHandler(e.currentTarget.checked)}
           color={selectedSection?.color}
         />
@@ -159,6 +159,8 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
       ))}
     </MenuDropdown>
   );
+
+  if (screenMode === ScreenMode.UnwantedDayPicker || isDisabled) return;
 
   return (
     <div className={`flex flex-col items-center`}>
