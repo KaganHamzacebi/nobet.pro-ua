@@ -3,20 +3,25 @@ import { IAssistant } from '@/models/IAssistant';
 import { ISection } from '@/models/ISection';
 import { NumberInput } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 
 interface ISectionCellRendererProps {
   assistant: IAssistant;
   section: ISection;
-  setAssistantProps: (assistantId: IAssistant['id'], props: Partial<IAssistant>) => void;
+  setAssistantProps: (
+    assistantId: IAssistant['id'],
+    props: Partial<IAssistant>
+  ) => void;
 }
 
 export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
   assistant,
   section,
-  setAssistantProps,
+  setAssistantProps
 }) => {
-  const [count, setCount] = useState<number>(assistant.sectionConfig.counts[section.id] ?? 0);
+  const [count, setCount] = useState<number>(
+    assistant.sectionConfig.counts[section.id] ?? 0
+  );
 
   const setAssistantSectionConfig = useDebouncedCallback((count: number) => {
     setAssistantProps(assistant.id, {
@@ -24,10 +29,10 @@ export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
         ...assistant.sectionConfig,
         counts: {
           ...assistant.sectionConfig.counts,
-          [section.id]: count,
+          [section.id]: count
         },
-        version: GenerateUUID(),
-      },
+        version: GenerateUUID()
+      }
     });
   }, 500);
 
@@ -35,12 +40,19 @@ export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
     setAssistantSectionConfig(count);
   }, [count]);
 
+  const minimumSelectableDutyCount = useMemo(() => {
+    return Object.values(assistant.selectedDays.days).filter(
+      sec => sec.id === section.id
+    ).length;
+  }, [assistant.selectedDays.version]);
+
   return (
     <div className="w-full min-w-[200px]">
       <NumberInput
         value={count}
         onChange={e => setCount(Number(e))}
         size="xs"
+        min={minimumSelectableDutyCount}
         allowNegative={false}
       />
     </div>

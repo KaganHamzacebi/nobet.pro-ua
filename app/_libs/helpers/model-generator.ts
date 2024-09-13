@@ -9,15 +9,15 @@ export const newAssistant = (name?: string): IAssistant => {
     id: GenerateUUID(),
     name: name ?? 'New Assistant',
     selectedDays: {
-      days: [],
+      days: []
     },
     disabledDays: {
-      days: [],
+      days: []
     },
     sectionConfig: {
       counts: {},
-      version: GenerateUUID(),
-    },
+      version: GenerateUUID()
+    }
   };
 };
 
@@ -25,13 +25,15 @@ export const newSection = (sectionName?: string): ISection => {
   return {
     id: GenerateUUID(),
     name: sectionName ?? 'New Section',
-    color: getRandomColor(),
+    color: getRandomColor()
   };
 };
 
-export const newSelectedDayConfig = (sectionId: string): SelectedDayConfig[number] => {
+export const newSelectedDayConfig = (
+  sectionId: string
+): SelectedDayConfig[number] => {
   return {
     sectionIds: new Set<string>([sectionId]),
-    version: GenerateUUID(),
+    version: GenerateUUID()
   };
 };

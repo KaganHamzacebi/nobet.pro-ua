@@ -1,5 +1,6 @@
 'use client';
 
+import { ScreenMode } from '@/app/_models/ScreenMode';
 import CalendarIcon from '@/components/icons/Calendar';
 import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { AddButton } from '@/components/ui/AddButton';
@@ -13,12 +14,16 @@ import { newAssistant, newSection } from '@/libs/helpers/model-generator';
 import {
   DefaultAssistantList,
   DefaultMonthConfig,
-  DefaultSectionList,
+  DefaultSectionList
 } from '@/libs/mock/nobet.data';
 import { IAssistant } from '@/models/IAssistant';
 import { ISection } from '@/models/ISection';
 import { MonthConfig } from '@/models/MonthConfig';
-import { DefaultNobetContext, INobetContext, SelectedDayConfig } from '@/models/NobetContext';
+import {
+  DefaultNobetContext,
+  INobetContext,
+  SelectedDayConfig
+} from '@/models/NobetContext';
 import { Button, NumberInput, SegmentedControl } from '@mantine/core';
 import { MonthPickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
@@ -26,115 +31,147 @@ import {
   MantineReactTable,
   MRT_ColumnDef,
   MRT_Row,
-  useMantineReactTable,
+  useMantineReactTable
 } from 'mantine-react-table';
-import { createContext, useCallback, useMemo, useState, useTransition } from 'react';
-
-enum ScreenMode {
-  MonthPicker = 'MonthPicker',
-  SectionEditor = 'SectionEditor',
-}
+import {
+  createContext,
+  useCallback,
+  useMemo,
+  useState,
+  useTransition
+} from 'react';
+import { ExportModal } from './ExportModal';
 
 export const NobetContext = createContext<INobetContext>(DefaultNobetContext);
 
 export function NobetScheduler() {
   const [isPending, startTransition] = useTransition();
-  const [clearSelectionsTrigger, setClearSelectionsTrigger] = useState<boolean>(false);
-  const [monthConfig, setMonthConfig] = useState<MonthConfig>(DefaultMonthConfig);
-  const [screenMode, setScreenMode] = useState<ScreenMode>(ScreenMode.MonthPicker);
-  const [assistantList, setAssistantList] = useState<IAssistant[]>(DefaultAssistantList);
-  const [sectionList, setSectionList] = useState<ISection[]>(DefaultSectionList);
-  const [selectedDayConfig, setSelectedDayConfig] = useState<SelectedDayConfig>({});
+  const [rerenderColumns, setRerenderColumns] = useState(false);
+  const [clearSelectionsTrigger, setClearSelectionsTrigger] =
+    useState<boolean>(false);
+  const [monthConfig, setMonthConfig] =
+    useState<MonthConfig>(DefaultMonthConfig);
+  const [screenMode, setScreenMode] = useState<ScreenMode>(
+    ScreenMode.MonthPicker
+  );
+  const [assistantList, setAssistantList] =
+    useState<IAssistant[]>(DefaultAssistantList);
+  const [sectionList, setSectionList] =
+    useState<ISection[]>(DefaultSectionList);
+  const [selectedDayConfig, setSelectedDayConfig] = useState<SelectedDayConfig>(
+    {}
+  );
+  const [unwantedDays, setUnwantedDays] = useState<Record<string, boolean>>({});
 
   const contextValue = useMemo(
     () => ({
+      screenMode,
       monthConfig,
       assistantList,
       setAssistantList,
       sectionList,
       setSectionList,
       selectedDayConfig,
-      setSelectedDayConfig,
+      setSelectedDayConfig
     }),
-    [monthConfig, assistantList, sectionList, selectedDayConfig],
+    [screenMode, monthConfig, assistantList, sectionList, selectedDayConfig]
   );
 
-  const changeScreenMode = useCallback((screenMode: ScreenMode) => {
-    startTransition(() => setScreenMode(screenMode));
+  const handleScreenModeChange = useCallback((mode: ScreenMode) => {
+    startTransition(() => {
+      setScreenMode(mode);
+      setRerenderColumns(prev => !prev);
+    });
   }, []);
 
   const addAssistant = useCallback(() => {
     setAssistantList(prevState => [
       ...prevState,
-      newAssistant(`New Assistant - ${assistantList.length}`),
+      newAssistant(`New Assistant - ${assistantList.length}`)
     ]);
   }, [assistantList.length]);
 
   const removeAssistant = useCallback(
     (assistantId: IAssistant['id']) => {
-      setAssistantList(prevState => prevState.filter(assistant => assistant.id !== assistantId));
-      const assistantSelectedDays = assistantList.find(assistant => assistant.id !== assistantId)
-        ?.selectedDays.days;
+      setAssistantList(prevState =>
+        prevState.filter(assistant => assistant.id !== assistantId)
+      );
+      const assistantSelectedDays = assistantList.find(
+        assistant => assistant.id !== assistantId
+      )?.selectedDays.days;
       const updatedSelectedDayConfig = { ...selectedDayConfig };
       if (assistantSelectedDays) {
         Object.entries(assistantSelectedDays).forEach(([dayIndex, section]) => {
-          updatedSelectedDayConfig[Number(dayIndex)].sectionIds.delete(section.id);
+          updatedSelectedDayConfig[Number(dayIndex)].sectionIds.delete(
+            section.id
+          );
           updatedSelectedDayConfig[Number(dayIndex)].version = GenerateUUID();
         });
         setSelectedDayConfig(updatedSelectedDayConfig);
       }
     },
-    [assistantList, selectedDayConfig],
+    [assistantList, selectedDayConfig]
   );
 
   const setAssistantProps = useCallback(
     (assistantId: IAssistant['id'], props: Partial<IAssistant>) => {
       setAssistantList(prevState =>
         prevState.map(assistant =>
-          assistant.id === assistantId ? { ...assistant, ...props } : assistant,
-        ),
+          assistant.id === assistantId ? { ...assistant, ...props } : assistant
+        )
       );
     },
-    [],
+    []
   );
 
   const addSection = useCallback(() => {
-    setSectionList(prevState => [...prevState, newSection(`New Section - ${sectionList.length}`)]);
+    setSectionList(prevState => [
+      ...prevState,
+      newSection(`New Section - ${sectionList.length}`)
+    ]);
     setAssistantList(prevState =>
       prevState.map(assistant => ({
         ...assistant,
         sectionConfig: {
           ...assistant.sectionConfig,
-          version: GenerateUUID(),
-        },
-      })),
+          version: GenerateUUID()
+        }
+      }))
     );
+    setRerenderColumns(prev => !prev);
   }, [sectionList.length]);
 
   const removeSection = useCallback((sectionId: ISection['id']) => {
     setSectionList(prevState => prevState.filter(i => i.id !== sectionId));
+    setRerenderColumns(prev => !prev);
   }, []);
 
-  const setSectionProps = useCallback((sectionId: ISection['id'], props: Partial<ISection>) => {
-    setSectionList(prevState =>
-      prevState.map(section => (section.id === sectionId ? { ...section, ...props } : section)),
-    );
-  }, []);
+  const setSectionProps = useCallback(
+    (sectionId: ISection['id'], props: Partial<ISection>) => {
+      setSectionList(prevState =>
+        prevState.map(section =>
+          section.id === sectionId ? { ...section, ...props } : section
+        )
+      );
+    },
+    []
+  );
 
   const handleClearSelections = () => {
     setAssistantList(prevState =>
       prevState.map(assistant => ({
         ...assistant,
         selectedDays: {
-          days: [],
+          days: []
         },
         disabledDays: {
-          days: [],
-        },
-      })),
+          days: []
+        }
+      }))
     );
     setSelectedDayConfig({});
     setClearSelectionsTrigger(prev => !prev);
+    setRerenderColumns(prev => !prev);
   };
 
   const onDateChange = useCallback(
@@ -143,21 +180,54 @@ export function NobetScheduler() {
       setMonthConfig({
         datesInMonth: dayjs(date).daysInMonth(),
         weekendIndexes: getWeekendDayIndexes(date),
-        numberOfRestDays: monthConfig.numberOfRestDays,
+        numberOfRestDays: monthConfig.numberOfRestDays
       });
+      setRerenderColumns(prev => !prev);
     },
-    [monthConfig],
+    [monthConfig]
   );
+
+  const isRestDayDisabled = useMemo(() => {
+    return assistantList.some(a => Object.keys(a.selectedDays.days).length > 0);
+  }, [assistantList]);
 
   const setNumberOfRestDays = useCallback(
     (numberOfRestDays: string | number) => {
       setMonthConfig({
         ...monthConfig,
-        numberOfRestDays: Number(numberOfRestDays),
+        numberOfRestDays: Number(numberOfRestDays)
       });
     },
-    [monthConfig],
+    [monthConfig]
   );
+
+  const toggleUnwantedDay = (assistantId: string, index: number) => {
+    if (screenMode !== ScreenMode.UnwantedDayPicker) return;
+    setUnwantedDays(prev => {
+      const id = assistantId + '-' + index;
+      const updatedMap = { ...prev };
+      if (updatedMap[id] != undefined) delete updatedMap[id];
+      else updatedMap[id] = true;
+
+      return updatedMap;
+    });
+    setRerenderColumns(prev => !prev);
+  };
+
+  const mantineTableBodyCellClasses = (index: number, asssitantId: string) => {
+    const classes: string[] = [];
+
+    const isWeekend = monthConfig.weekendIndexes.includes(index + 1);
+    const isUnwanted = unwantedDays[`${asssitantId}-${index}`];
+    const isUnwantedMode = screenMode === ScreenMode.UnwantedDayPicker;
+
+    if (isWeekend && isUnwanted) classes.push('bg-attention-700');
+    else if (isWeekend) classes.push('bg-onyx');
+    else if (isUnwanted) classes.push('bg-attention');
+    if (isUnwantedMode) classes.push('cursor-pointer');
+
+    return classes.join(' ');
+  };
 
   const columns = useMemo<MRT_ColumnDef<IAssistant>[]>(
     () => [
@@ -170,28 +240,39 @@ export function NobetScheduler() {
             setAssistantProps={setAssistantProps}
             removeAssistant={removeAssistant}
           />
-        ),
+        )
       },
-      ...(screenMode === ScreenMode.MonthPicker
+      ...(screenMode === ScreenMode.MonthPicker ||
+      screenMode === ScreenMode.UnwantedDayPicker
         ? Array.from({ length: monthConfig.datesInMonth }).map(
             (_, index) =>
               ({
+                id: String(index + 1),
+                header: 'Month',
                 size: 30,
-                header: String(index + 1),
-                mantineTableHeadCellProps: {
+                mantineTableHeadCellProps: _ => ({
                   className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
-                },
-                mantineTableBodyCellProps: {
-                  className: `${monthConfig.weekendIndexes.includes(index + 1) ? 'bg-onyx' : undefined}`,
-                },
+                  children: (
+                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                      <span>{String(index + 1)}</span>
+                    </div>
+                  )
+                }),
+                mantineTableBodyCellProps: ({ row }) => ({
+                  className: mantineTableBodyCellClasses(
+                    index,
+                    row.original.id
+                  ),
+                  onClick: () => toggleUnwantedDay(row.original.id, index)
+                }),
                 Cell: ({ row }) => (
                   <MonthCellRenderer
                     dayIndex={index + 1}
                     assistant={row.original}
                     clearSelectionsTrigger={clearSelectionsTrigger}
                   />
-                ),
-              }) as MRT_ColumnDef<IAssistant>,
+                )
+              }) as MRT_ColumnDef<IAssistant>
           )
         : sectionList.map(section => ({
             id: section.id,
@@ -209,19 +290,10 @@ export function NobetScheduler() {
                 section={section}
                 setAssistantProps={setAssistantProps}
               />
-            ),
-          }))),
+            )
+          })))
     ],
-    [
-      monthConfig.datesInMonth,
-      monthConfig.weekendIndexes,
-      removeAssistant,
-      removeSection,
-      screenMode,
-      sectionList,
-      setAssistantProps,
-      setSectionProps,
-    ],
+    [rerenderColumns]
   );
 
   const table = useMantineReactTable({
@@ -234,14 +306,14 @@ export function NobetScheduler() {
     enableColumnPinning: true,
     initialState: {
       columnPinning: { left: ['name'] },
-      density: 'xs',
+      density: 'xs'
     },
     mantineTableProps: {
-      striped: 'even',
       withColumnBorders: true,
+      highlightOnHover: false
     },
     state: { isLoading: isPending },
-    getRowId: row => row.id,
+    getRowId: row => row.id
   });
 
   return (
@@ -264,17 +336,27 @@ export function NobetScheduler() {
             label="Number of Rest days"
             value={monthConfig.numberOfRestDays}
             onChange={setNumberOfRestDays}
+            min={0}
+            disabled={isRestDayDisabled}
+            clampBehavior="strict"
             allowNegative={false}
-            max={monthConfig.datesInMonth}
+            allowDecimal={false}
           />
-          <div className="ml-auto mt-auto">
+          <div className="ml-auto mt-auto flex flex-row gap-x-4">
+            <ExportModal
+              assistantList={assistantList}
+              sectionList={sectionList}
+            />
             <SegmentedControl
-              value={screenMode}
-              onChange={e => changeScreenMode(e as ScreenMode)}
+              onChange={e => handleScreenModeChange(e as ScreenMode)}
               color="yellow"
               data={[
                 { label: 'Month Picker', value: ScreenMode.MonthPicker },
-                { label: 'Section Editor', value: ScreenMode.SectionEditor },
+                {
+                  label: 'Unwanted Day Picker',
+                  value: ScreenMode.UnwantedDayPicker
+                },
+                { label: 'Section Editor', value: ScreenMode.SectionEditor }
               ]}
             />
           </div>

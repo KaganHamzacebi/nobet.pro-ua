@@ -1,3 +1,12 @@
-*.js
+.next
+.cache
+pnpm-lock.yaml
+public
+node_modules
+next-env.d.ts
+
 *.mjs
-*.cjs
+*.js
+*.yaml
+*.yml
+app/_components/icons/*
