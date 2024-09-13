@@ -45,7 +45,9 @@ export const ExportModal: FC<IExportModal> = ({
   const headers = (
     <Table.Tr>
       {headerData.map((s, i) => (
-        <Table.Th className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
+        <Table.Th
+          key={`header-${i}`}
+          className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
           {s}
         </Table.Th>
       ))}
