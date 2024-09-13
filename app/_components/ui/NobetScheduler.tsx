@@ -171,6 +171,7 @@ export function NobetScheduler() {
     );
     setSelectedDayConfig({});
     setClearSelectionsTrigger(prev => !prev);
+    setRerenderColumns(prev => !prev);
   };
 
   const onDateChange = useCallback(
