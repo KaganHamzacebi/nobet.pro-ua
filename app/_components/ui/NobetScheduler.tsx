@@ -46,7 +46,7 @@ export const NobetContext = createContext<INobetContext>(DefaultNobetContext);
 
 export function NobetScheduler() {
   const [isPending, startTransition] = useTransition();
-  const [renrenderColumns, setRerenderColumns] = useState(false);
+  const [rerenderColumns, setRerenderColumns] = useState(false);
   const [clearSelectionsTrigger, setClearSelectionsTrigger] =
     useState<boolean>(false);
   const [monthConfig, setMonthConfig] =
@@ -293,7 +293,7 @@ export function NobetScheduler() {
             )
           })))
     ],
-    [renrenderColumns]
+    [rerenderColumns]
   );
 
   const table = useMantineReactTable({
