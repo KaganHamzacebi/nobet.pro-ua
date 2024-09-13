@@ -39,6 +39,7 @@ import {
   useState,
   useTransition
 } from 'react';
+import { ExportModal } from './ExportModal';
 
 enum ScreenMode {
   MonthPicker = 'MonthPicker',
@@ -311,7 +312,11 @@ export function NobetScheduler() {
             allowNegative={false}
             allowDecimal={false}
           />
-          <div className="ml-auto mt-auto">
+          <div className="ml-auto mt-auto flex flex-row gap-x-4">
+            <ExportModal
+              assistantList={assistantList}
+              sectionList={sectionList}
+            />
             <SegmentedControl
               value={screenMode}
               onChange={e => changeScreenMode(e as ScreenMode)}
