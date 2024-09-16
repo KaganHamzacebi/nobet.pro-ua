@@ -1,9 +1,6 @@
 'use client';
 
 import { ScreenMode } from '@/app/_models/ScreenMode';
-import CalendarIcon from '@/components/icons/Calendar';
-import { TrashSolidIcon } from '@/components/icons/TrashSolid';
-import { AddButton } from '@/components/ui/AddButton';
 import { AssistantNameRenderer } from '@/components/ui/AssistantNameRenderer';
 import { MonthCellRenderer } from '@/components/ui/MonthCellRenderer';
 import { SectionCellRenderer } from '@/components/ui/SectionCellRenderer';
@@ -24,8 +21,6 @@ import {
   INobetContext,
   SelectedDayConfig
 } from '@/models/NobetContext';
-import { Button, NumberInput, SegmentedControl } from '@mantine/core';
-import { MonthPickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
 import {
   MantineReactTable,
@@ -40,7 +35,8 @@ import {
   useState,
   useTransition
 } from 'react';
-import { ExportModal } from './ExportModal';
+import { SchedulerBottomBar } from './SchedulerBottomBar';
+import { SchedulerTopBar } from './SchedulerTopBar';
 
 export const NobetContext = createContext<INobetContext>(DefaultNobetContext);
 
@@ -319,65 +315,20 @@ export function NobetScheduler() {
   return (
     <NobetContext.Provider value={contextValue}>
       <div className="h-full w-full">
-        <div className="flex flex-row gap-x-4">
-          <MonthPickerInput
-            minDate={dayjs().toDate()}
-            maxLevel="year"
-            allowDeselect={false}
-            onChange={onDateChange}
-            defaultValue={new Date()}
-            label="Pick Month"
-            leftSection={<CalendarIcon />}
-            leftSectionPointerEvents="none"
-            className="w-[10rem]"
-          />
-          <NumberInput
-            className="w-fit"
-            label="Number of Rest days"
-            value={monthConfig.numberOfRestDays}
-            onChange={setNumberOfRestDays}
-            min={0}
-            disabled={isRestDayDisabled}
-            clampBehavior="strict"
-            allowNegative={false}
-            allowDecimal={false}
-          />
-          <div className="ml-auto mt-auto flex flex-row gap-x-4">
-            <ExportModal
-              assistantList={assistantList}
-              sectionList={sectionList}
-            />
-            <SegmentedControl
-              onChange={e => handleScreenModeChange(e as ScreenMode)}
-              color="yellow"
-              data={[
-                { label: 'Month Picker', value: ScreenMode.MonthPicker },
-                {
-                  label: 'Unwanted Day Picker',
-                  value: ScreenMode.UnwantedDayPicker
-                },
-                { label: 'Section Editor', value: ScreenMode.SectionEditor }
-              ]}
-            />
-          </div>
-        </div>
+        <SchedulerTopBar
+          onDateChange={onDateChange}
+          setNumberOfRestDays={setNumberOfRestDays}
+          isRestDayDisabled={isRestDayDisabled}
+          handleScreenModeChange={handleScreenModeChange}
+        />
         <div className="mt-2">
           <MantineReactTable<IAssistant> table={table} />
         </div>
-        <div className="mt-4 flex flex-row gap-x-4">
-          <AddButton label="Add Assistant" onClick={addAssistant} />
-          {screenMode === ScreenMode.SectionEditor && (
-            <AddButton label="Add New Section" onClick={addSection} />
-          )}
-          {screenMode === ScreenMode.MonthPicker && (
-            <Button
-              leftSection={<TrashSolidIcon className="size-4" />}
-              onClick={handleClearSelections}
-              className="bg-attention hover:bg-attention-hover">
-              Clear Selections
-            </Button>
-          )}
-        </div>
+        <SchedulerBottomBar
+          addAssistant={addAssistant}
+          addSection={addSection}
+          handleClearSelections={handleClearSelections}
+        />
       </div>
     </NobetContext.Provider>
   );
