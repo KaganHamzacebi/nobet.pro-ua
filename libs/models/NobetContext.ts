@@ -7,7 +7,7 @@ import { IAssistant } from '@/libs/models/IAssistant';
 import { ISection } from '@/libs/models/ISection';
 import { MonthConfig } from '@/libs/models/MonthConfig';
 import { Dispatch, SetStateAction } from 'react';
-import { ScreenMode } from '../enums/ScreenMode';
+import { ScreenMode } from '../enums/screen-mode';
 
 // Stores data by DayIndex
 export type SelectedDayConfig = Record<

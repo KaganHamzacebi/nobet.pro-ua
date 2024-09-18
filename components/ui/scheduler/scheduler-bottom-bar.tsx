@@ -1,9 +1,9 @@
-import { ScreenMode } from '@/libs/enums/ScreenMode';
+import { ScreenMode } from '@/libs/enums/screen-mode';
 import { Button } from '@mantine/core';
 import { FC, useContext } from 'react';
-import { TrashSolidIcon } from '../icons/TrashSolid';
-import { AddButton } from './AddButton';
-import { NobetContext } from './NobetScheduler';
+import { TrashSolidIcon } from '../../icons/TrashSolid';
+import { AddButton } from '../add-button';
+import { NobetContext } from './duty-scheduler';
 
 interface ISchedulerBottomBar {
   addAssistant: () => void;

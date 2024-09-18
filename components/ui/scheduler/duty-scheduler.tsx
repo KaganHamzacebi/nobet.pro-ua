@@ -1,10 +1,10 @@
 'use client';
 
-import { AssistantNameRenderer } from '@/components/ui/AssistantNameRenderer';
-import { MonthCellRenderer } from '@/components/ui/MonthCellRenderer';
-import { SectionCellRenderer } from '@/components/ui/SectionCellRenderer';
-import { SectionHeaderRenderer } from '@/components/ui/SectionHeaderRenderer';
-import { ScreenMode } from '@/libs/enums/ScreenMode';
+import { AssistantNameRenderer } from '@/components/ui/table-renderers/assistant-name-renderer';
+import { MonthCellRenderer } from '@/components/ui/table-renderers/month-cell-renderer';
+import { SectionCellRenderer } from '@/components/ui/table-renderers/section-cell-renderer';
+import { SectionHeaderRenderer } from '@/components/ui/table-renderers/section-header-renderer';
+import { ScreenMode } from '@/libs/enums/screen-mode';
 import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { newAssistant, newSection } from '@/libs/helpers/model-generator';
@@ -35,12 +35,12 @@ import {
   useState,
   useTransition
 } from 'react';
-import { SchedulerBottomBar } from './SchedulerBottomBar';
-import { SchedulerTopBar } from './SchedulerTopBar';
+import { SchedulerBottomBar } from './scheduler-bottom-bar';
+import { SchedulerTopBar } from './scheduler-top-bar';
 
 export const NobetContext = createContext<INobetContext>(DefaultNobetContext);
 
-export function NobetScheduler() {
+export function DutyScheduler() {
   const [isPending, startTransition] = useTransition();
   const [rerenderColumns, setRerenderColumns] = useState(false);
   const [clearSelectionsTrigger, setClearSelectionsTrigger] =

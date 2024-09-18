@@ -1,5 +1,5 @@
-import { NobetContext } from '@/components/ui/NobetScheduler';
-import { ScreenMode } from '@/libs/enums/ScreenMode';
+import { NobetContext } from '@/components/ui/scheduler/duty-scheduler';
+import { ScreenMode } from '@/libs/enums/screen-mode';
 import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { newSelectedDayConfig } from '@/libs/helpers/model-generator';

@@ -1,9 +1,9 @@
-import { IAssistant } from '@/_models/IAssistant';
-import { ISection } from '@/_models/ISection';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
 import { Button, Modal, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FC, useContext, useMemo } from 'react';
-import { NobetContext } from './NobetScheduler';
+import { NobetContext } from './scheduler/duty-scheduler';
 
 interface IExportModal {
   assistantList: IAssistant[];

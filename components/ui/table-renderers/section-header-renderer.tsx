@@ -19,7 +19,7 @@ import {
   useMemo,
   useState
 } from 'react';
-import { NobetContext } from './NobetScheduler';
+import { NobetContext } from '../scheduler/duty-scheduler';
 
 interface ISectionHeaderRenderer {
   section: ISection;
