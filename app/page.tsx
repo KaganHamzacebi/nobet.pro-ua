@@ -1,4 +1,4 @@
-import { DutyScheduler } from '@/components/ui/scheduler/duty-scheduler';
+import DutyScheduler from '@/components/ui/scheduler/duty-scheduler';
 
 export default function Home() {
   return (

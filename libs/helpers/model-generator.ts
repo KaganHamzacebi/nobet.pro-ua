@@ -29,9 +29,7 @@ export const newSection = (sectionName?: string): ISection => {
   };
 };
 
-export const newSelectedDayConfig = (
-  sectionId: string
-): SelectedDayConfig[number] => {
+export const newSelectedDayConfig = (sectionId: string): SelectedDayConfig[number] => {
   return {
     sectionIds: new Set<string>([sectionId]),
     version: GenerateUUID()

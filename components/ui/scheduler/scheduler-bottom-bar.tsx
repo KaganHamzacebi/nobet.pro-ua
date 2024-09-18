@@ -1,8 +1,8 @@
 import { ScreenMode } from '@/libs/enums/screen-mode';
 import { Button } from '@mantine/core';
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 import { TrashSolidIcon } from '../../icons/TrashSolid';
-import { AddButton } from '../add-button';
+import AddButton from '../add-button';
 import { NobetContext } from './duty-scheduler';
 
 interface ISchedulerBottomBar {
@@ -11,11 +11,11 @@ interface ISchedulerBottomBar {
   handleClearSelections: () => void;
 }
 
-export const SchedulerBottomBar: FC<ISchedulerBottomBar> = ({
+export default function SchedulerBottomBar({
   addAssistant,
   addSection,
   handleClearSelections
-}) => {
+}: Readonly<ISchedulerBottomBar>) {
   const { screenMode } = useContext(NobetContext);
 
   return (
@@ -34,4 +34,4 @@ export const SchedulerBottomBar: FC<ISchedulerBottomBar> = ({
       )}
     </div>
   );
-};
+}

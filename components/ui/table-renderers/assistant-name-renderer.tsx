@@ -3,19 +3,19 @@ import { IAssistant } from '@/libs/models/IAssistant';
 import { ActionIcon, TextInput, Tooltip } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
 import { MRT_Row } from 'mantine-react-table';
-import { FC, useState } from 'react';
+import { useState } from 'react';
 
-interface IAssistantNameRendererProps {
+interface IAssistantNameRenderer {
   row: MRT_Row<IAssistant>;
   setAssistantProps: (id: string, props: Partial<IAssistant>) => void;
   removeAssistant: (id: IAssistant['id']) => void;
 }
 
-export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({
+export default function AssistantNameRenderer({
   row,
   setAssistantProps,
   removeAssistant
-}) => {
+}: Readonly<IAssistantNameRenderer>) {
   const [name, setName] = useState<string>(row.original.name);
 
   const setDebouncedName = useDebouncedCallback((name: string) => {
@@ -28,11 +28,7 @@ export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({
 
   return (
     <div className="flex flex-row items-center gap-x-2">
-      <TextInput
-        size="xs"
-        value={name}
-        onChange={e => setName(e.target.value)}
-      />
+      <TextInput size="xs" value={name} onChange={e => setName(e.target.value)} />
       <Tooltip label={`Remove ${name}`}>
         <ActionIcon
           size="sm"
@@ -43,4 +39,4 @@ export const AssistantNameRenderer: FC<IAssistantNameRendererProps> = ({
       </Tooltip>
     </div>
   );
-};
+}

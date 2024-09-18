@@ -2,7 +2,7 @@ import { IAssistant } from '@/libs/models/IAssistant';
 import { ISection } from '@/libs/models/ISection';
 import { Button, Modal, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { FC, useContext, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { NobetContext } from './scheduler/duty-scheduler';
 
 interface IExportModal {
@@ -10,10 +10,7 @@ interface IExportModal {
   sectionList: ISection[];
 }
 
-export const ExportModal: FC<IExportModal> = ({
-  assistantList,
-  sectionList
-}) => {
+export default function ExportModal({ assistantList, sectionList }: Readonly<IExportModal>) {
   const { monthConfig } = useContext(NobetContext);
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -24,10 +21,7 @@ export const ExportModal: FC<IExportModal> = ({
   const tableData = useMemo(() => {
     const data: string[][] = Array(monthConfig.datesInMonth)
       .fill(null)
-      .map((_, index) => [
-        String(index + 1),
-        ...Array(sectionList.length).fill('')
-      ]);
+      .map((_, index) => [String(index + 1), ...Array(sectionList.length).fill('')]);
 
     for (const assistant of assistantList) {
       const days = Object.keys(assistant.selectedDays.days).map(i => Number(i));
@@ -45,9 +39,7 @@ export const ExportModal: FC<IExportModal> = ({
   const headers = (
     <Table.Tr>
       {headerData.map((s, i) => (
-        <Table.Th
-          key={`header-${i}`}
-          className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
+        <Table.Th key={`header-${i}`} className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
           {s}
         </Table.Th>
       ))}
@@ -57,9 +49,7 @@ export const ExportModal: FC<IExportModal> = ({
   const rows = tableData.map((row: string[]) => (
     <Table.Tr key={`row-${row[0]}`}>
       {row.map((cell, i) => (
-        <Table.Th
-          key={`cell-${i}`}
-          className={`text-center ${i === 0 && 'w-4 bg-onyx'}`}>
+        <Table.Th key={`cell-${i}`} className={`text-center ${i === 0 && 'w-4 bg-onyx'}`}>
           {cell}
         </Table.Th>
       ))}
@@ -88,4 +78,4 @@ export const ExportModal: FC<IExportModal> = ({
       <Button onClick={open}>Export</Button>
     </>
   );
-};
+}

@@ -1,9 +1,9 @@
 'use client';
 
-import { AssistantNameRenderer } from '@/components/ui/table-renderers/assistant-name-renderer';
-import { MonthCellRenderer } from '@/components/ui/table-renderers/month-cell-renderer';
-import { SectionCellRenderer } from '@/components/ui/table-renderers/section-cell-renderer';
-import { SectionHeaderRenderer } from '@/components/ui/table-renderers/section-header-renderer';
+import AssistantNameRenderer from '@/components/ui/table-renderers/assistant-name-renderer';
+import MonthCellRenderer from '@/components/ui/table-renderers/month-cell-renderer';
+import SectionCellRenderer from '@/components/ui/table-renderers/section-cell-renderer';
+import SectionHeaderRenderer from '@/components/ui/table-renderers/section-header-renderer';
 import { ScreenMode } from '@/libs/enums/screen-mode';
 import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
@@ -16,11 +16,7 @@ import {
 import { IAssistant } from '@/libs/models/IAssistant';
 import { ISection } from '@/libs/models/ISection';
 import { MonthConfig } from '@/libs/models/MonthConfig';
-import {
-  DefaultNobetContext,
-  INobetContext,
-  SelectedDayConfig
-} from '@/libs/models/NobetContext';
+import { DefaultNobetContext, INobetContext, SelectedDayConfig } from '@/libs/models/NobetContext';
 import dayjs from 'dayjs';
 import {
   MantineReactTable,
@@ -28,35 +24,21 @@ import {
   MRT_Row,
   useMantineReactTable
 } from 'mantine-react-table';
-import {
-  createContext,
-  useCallback,
-  useMemo,
-  useState,
-  useTransition
-} from 'react';
-import { SchedulerBottomBar } from './scheduler-bottom-bar';
-import { SchedulerTopBar } from './scheduler-top-bar';
+import { createContext, useCallback, useMemo, useState, useTransition } from 'react';
+import SchedulerBottomBar from './scheduler-bottom-bar';
+import SchedulerTopBar from './scheduler-top-bar';
 
 export const NobetContext = createContext<INobetContext>(DefaultNobetContext);
 
-export function DutyScheduler() {
+export default function DutyScheduler() {
   const [isPending, startTransition] = useTransition();
   const [rerenderColumns, setRerenderColumns] = useState(false);
-  const [clearSelectionsTrigger, setClearSelectionsTrigger] =
-    useState<boolean>(false);
-  const [monthConfig, setMonthConfig] =
-    useState<MonthConfig>(DefaultMonthConfig);
-  const [screenMode, setScreenMode] = useState<ScreenMode>(
-    ScreenMode.MonthPicker
-  );
-  const [assistantList, setAssistantList] =
-    useState<IAssistant[]>(DefaultAssistantList);
-  const [sectionList, setSectionList] =
-    useState<ISection[]>(DefaultSectionList);
-  const [selectedDayConfig, setSelectedDayConfig] = useState<SelectedDayConfig>(
-    {}
-  );
+  const [clearSelectionsTrigger, setClearSelectionsTrigger] = useState<boolean>(false);
+  const [monthConfig, setMonthConfig] = useState<MonthConfig>(DefaultMonthConfig);
+  const [screenMode, setScreenMode] = useState<ScreenMode>(ScreenMode.MonthPicker);
+  const [assistantList, setAssistantList] = useState<IAssistant[]>(DefaultAssistantList);
+  const [sectionList, setSectionList] = useState<ISection[]>(DefaultSectionList);
+  const [selectedDayConfig, setSelectedDayConfig] = useState<SelectedDayConfig>({});
   const [unwantedDays, setUnwantedDays] = useState<Record<string, boolean>>({});
 
   const contextValue = useMemo(
@@ -89,18 +71,13 @@ export function DutyScheduler() {
 
   const removeAssistant = useCallback(
     (assistantId: IAssistant['id']) => {
-      setAssistantList(prevState =>
-        prevState.filter(assistant => assistant.id !== assistantId)
-      );
-      const assistantSelectedDays = assistantList.find(
-        assistant => assistant.id !== assistantId
-      )?.selectedDays.days;
+      setAssistantList(prevState => prevState.filter(assistant => assistant.id !== assistantId));
+      const assistantSelectedDays = assistantList.find(assistant => assistant.id !== assistantId)
+        ?.selectedDays.days;
       const updatedSelectedDayConfig = { ...selectedDayConfig };
       if (assistantSelectedDays) {
         Object.entries(assistantSelectedDays).forEach(([dayIndex, section]) => {
-          updatedSelectedDayConfig[Number(dayIndex)].sectionIds.delete(
-            section.id
-          );
+          updatedSelectedDayConfig[Number(dayIndex)].sectionIds.delete(section.id);
           updatedSelectedDayConfig[Number(dayIndex)].version = GenerateUUID();
         });
         setSelectedDayConfig(updatedSelectedDayConfig);
@@ -121,10 +98,7 @@ export function DutyScheduler() {
   );
 
   const addSection = useCallback(() => {
-    setSectionList(prevState => [
-      ...prevState,
-      newSection(`New Section - ${sectionList.length}`)
-    ]);
+    setSectionList(prevState => [...prevState, newSection(`New Section - ${sectionList.length}`)]);
     setAssistantList(prevState =>
       prevState.map(assistant => ({
         ...assistant,
@@ -142,16 +116,11 @@ export function DutyScheduler() {
     setRerenderColumns(prev => !prev);
   }, []);
 
-  const setSectionProps = useCallback(
-    (sectionId: ISection['id'], props: Partial<ISection>) => {
-      setSectionList(prevState =>
-        prevState.map(section =>
-          section.id === sectionId ? { ...section, ...props } : section
-        )
-      );
-    },
-    []
-  );
+  const setSectionProps = useCallback((sectionId: ISection['id'], props: Partial<ISection>) => {
+    setSectionList(prevState =>
+      prevState.map(section => (section.id === sectionId ? { ...section, ...props } : section))
+    );
+  }, []);
 
   const handleClearSelections = () => {
     setAssistantList(prevState =>
@@ -238,8 +207,7 @@ export function DutyScheduler() {
           />
         )
       },
-      ...(screenMode === ScreenMode.MonthPicker ||
-      screenMode === ScreenMode.UnwantedDayPicker
+      ...(screenMode === ScreenMode.MonthPicker || screenMode === ScreenMode.UnwantedDayPicker
         ? Array.from({ length: monthConfig.datesInMonth }).map(
             (_, index) =>
               ({
@@ -255,10 +223,7 @@ export function DutyScheduler() {
                   )
                 }),
                 mantineTableBodyCellProps: ({ row }) => ({
-                  className: mantineTableBodyCellClasses(
-                    index,
-                    row.original.id
-                  ),
+                  className: mantineTableBodyCellClasses(index, row.original.id),
                   onClick: () => toggleUnwantedDay(row.original.id, index)
                 }),
                 Cell: ({ row }) => (

@@ -1,11 +1,11 @@
 import CalendarIcon from '@/components/icons/Calendar';
-import { ExportModal } from '@/components/ui/export-modal';
+import ExportModal from '@/components/ui/export-modal';
 import { NobetContext } from '@/components/ui/scheduler/duty-scheduler';
 import { ScreenMode } from '@/libs/enums/screen-mode';
 import { NumberInput, SegmentedControl } from '@mantine/core';
 import { DateValue, MonthPickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
-import { FC, useContext } from 'react';
+import { useContext } from 'react';
 
 interface ISchedulerTopBar {
   onDateChange: (newDate: DateValue) => void;
@@ -14,12 +14,12 @@ interface ISchedulerTopBar {
   handleScreenModeChange: (screenMode: ScreenMode) => void;
 }
 
-export const SchedulerTopBar: FC<ISchedulerTopBar> = ({
+export default function SchedulerTopBar({
   onDateChange,
   setNumberOfRestDays,
   isRestDayDisabled,
   handleScreenModeChange
-}) => {
+}: Readonly<ISchedulerTopBar>) {
   const { monthConfig, assistantList, sectionList } = useContext(NobetContext);
 
   return (
@@ -63,4 +63,4 @@ export const SchedulerTopBar: FC<ISchedulerTopBar> = ({
       </div>
     </div>
   );
-};
+}
