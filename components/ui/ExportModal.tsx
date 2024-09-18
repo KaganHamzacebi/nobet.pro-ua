@@ -1,5 +1,5 @@
-import { IAssistant } from '@/app/_models/IAssistant';
-import { ISection } from '@/app/_models/ISection';
+import { IAssistant } from '@/_models/IAssistant';
+import { ISection } from '@/_models/ISection';
 import { Button, Modal, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { FC, useContext, useMemo } from 'react';

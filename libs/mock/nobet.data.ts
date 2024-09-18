@@ -1,9 +1,9 @@
 import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { newAssistant } from '@/libs/helpers/model-generator';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
-import { MonthConfig } from '@/models/MonthConfig';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
+import { MonthConfig } from '@/libs/models/MonthConfig';
 import dayjs from 'dayjs';
 
 const DefaultSection: ISection = {

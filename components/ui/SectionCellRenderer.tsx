@@ -1,6 +1,6 @@
 import { GenerateUUID } from '@/libs/helpers/id-generator';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
 import { NumberInput } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
 import { FC, useMemo, useState } from 'react';

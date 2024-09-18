@@ -1,6 +1,6 @@
 import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { swatches } from '@/libs/helpers/color-generator';
-import { ISection } from '@/models/ISection';
+import { ISection } from '@/libs/models/ISection';
 import {
   ActionIcon,
   ColorPicker,

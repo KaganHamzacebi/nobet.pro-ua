@@ -3,11 +3,11 @@ import {
   DefaultMonthConfig,
   DefaultSectionList
 } from '@/libs/mock/nobet.data';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
-import { MonthConfig } from '@/models/MonthConfig';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
+import { MonthConfig } from '@/libs/models/MonthConfig';
 import { Dispatch, SetStateAction } from 'react';
-import { ScreenMode } from './ScreenMode';
+import { ScreenMode } from '../enums/ScreenMode';
 
 // Stores data by DayIndex
 export type SelectedDayConfig = Record<

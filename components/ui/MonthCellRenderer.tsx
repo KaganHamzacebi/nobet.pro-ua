@@ -1,10 +1,10 @@
-import { ScreenMode } from '@/app/_models/ScreenMode';
 import { NobetContext } from '@/components/ui/NobetScheduler';
+import { ScreenMode } from '@/libs/enums/ScreenMode';
 import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { newSelectedDayConfig } from '@/libs/helpers/model-generator';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
 import { Checkbox, Menu, MenuDropdown, MenuItem, Tooltip } from '@mantine/core';
 import { useDidUpdate } from '@mantine/hooks';
 import { FC, useCallback, useContext, useMemo, useState } from 'react';

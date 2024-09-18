@@ -1,10 +1,10 @@
 'use client';
 
-import { ScreenMode } from '@/app/_models/ScreenMode';
 import { AssistantNameRenderer } from '@/components/ui/AssistantNameRenderer';
 import { MonthCellRenderer } from '@/components/ui/MonthCellRenderer';
 import { SectionCellRenderer } from '@/components/ui/SectionCellRenderer';
 import { SectionHeaderRenderer } from '@/components/ui/SectionHeaderRenderer';
+import { ScreenMode } from '@/libs/enums/ScreenMode';
 import { getWeekendDayIndexes } from '@/libs/helpers/get-weekend-indexes';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { newAssistant, newSection } from '@/libs/helpers/model-generator';
@@ -13,14 +13,14 @@ import {
   DefaultMonthConfig,
   DefaultSectionList
 } from '@/libs/mock/nobet.data';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
-import { MonthConfig } from '@/models/MonthConfig';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
+import { MonthConfig } from '@/libs/models/MonthConfig';
 import {
   DefaultNobetContext,
   INobetContext,
   SelectedDayConfig
-} from '@/models/NobetContext';
+} from '@/libs/models/NobetContext';
 import dayjs from 'dayjs';
 import {
   MantineReactTable,

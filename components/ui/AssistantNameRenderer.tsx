@@ -1,5 +1,5 @@
 import { TrashSolidIcon } from '@/components/icons/TrashSolid';
-import { IAssistant } from '@/models/IAssistant';
+import { IAssistant } from '@/libs/models/IAssistant';
 import { ActionIcon, TextInput, Tooltip } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
 import { MRT_Row } from 'mantine-react-table';

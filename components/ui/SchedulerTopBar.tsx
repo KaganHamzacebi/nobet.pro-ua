@@ -1,4 +1,4 @@
-import { ScreenMode } from '@/app/_models/ScreenMode';
+import { ScreenMode } from '@/libs/enums/ScreenMode';
 import { NumberInput, SegmentedControl } from '@mantine/core';
 import { DateValue, MonthPickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';

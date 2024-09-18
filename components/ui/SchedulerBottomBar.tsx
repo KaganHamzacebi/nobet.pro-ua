@@ -1,4 +1,4 @@
-import { ScreenMode } from '@/app/_models/ScreenMode';
+import { ScreenMode } from '@/libs/enums/ScreenMode';
 import { Button } from '@mantine/core';
 import { FC, useContext } from 'react';
 import { TrashSolidIcon } from '../icons/TrashSolid';
