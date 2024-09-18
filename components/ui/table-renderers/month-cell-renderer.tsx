@@ -12,14 +12,9 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 interface IMonthCellRenderer {
   dayIndex: number;
   assistant: IAssistant;
-  clearSelectionsTrigger: boolean;
 }
 
-export default function MonthCellRenderer({
-  dayIndex,
-  assistant,
-  clearSelectionsTrigger
-}: Readonly<IMonthCellRenderer>) {
+export default function MonthCellRenderer({ dayIndex, assistant }: Readonly<IMonthCellRenderer>) {
   const {
     screenMode,
     monthConfig,
@@ -98,8 +93,10 @@ export default function MonthCellRenderer({
   }, [selectedSection?.id, monthConfig.numberOfRestDays]);
 
   useDidUpdate(() => {
-    setSelectedSection(undefined);
-  }, [clearSelectionsTrigger]);
+    if (assistant.selectedDays.days[dayIndex] == undefined) {
+      setSelectedSection(undefined);
+    }
+  }, [assistant.selectedDays.version]);
 
   const selectSection = useCallback(
     (section: ISection | undefined) => {

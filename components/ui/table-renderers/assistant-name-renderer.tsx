@@ -8,7 +8,7 @@ import { useState } from 'react';
 interface IAssistantNameRenderer {
   row: MRT_Row<IAssistant>;
   setAssistantProps: (id: string, props: Partial<IAssistant>) => void;
-  removeAssistant: (id: IAssistant['id']) => void;
+  removeAssistant: (id: IAssistant) => void;
 }
 
 export default function AssistantNameRenderer({
@@ -30,10 +30,7 @@ export default function AssistantNameRenderer({
     <div className="flex flex-row items-center gap-x-2">
       <TextInput size="xs" value={name} onChange={e => setName(e.target.value)} />
       <Tooltip label={`Remove ${name}`}>
-        <ActionIcon
-          size="sm"
-          variant="transparent"
-          onClick={() => removeAssistant(row.original.id)}>
+        <ActionIcon size="sm" variant="transparent" onClick={() => removeAssistant(row.original)}>
           <TrashSolidIcon className="text-attention hover:text-attention-hover" />
         </ActionIcon>
       </Tooltip>

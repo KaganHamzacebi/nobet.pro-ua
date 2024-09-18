@@ -17,8 +17,11 @@ const DefaultAssistant: IAssistant = newAssistant('Kel Mahmut');
 const DefaultSectionList: ISection[] = [DefaultSection];
 const DefaultAssistantList: IAssistant[] = [DefaultAssistant];
 
+const now = dayjs();
+
 const DefaultMonthConfig: MonthConfig = {
-  datesInMonth: dayjs(new Date()).daysInMonth(),
+  selectedDate: now.startOf('month').toDate(),
+  datesInMonth: now.daysInMonth(),
   weekendIndexes: getWeekendDayIndexes(new Date()),
   numberOfRestDays: 2
 };

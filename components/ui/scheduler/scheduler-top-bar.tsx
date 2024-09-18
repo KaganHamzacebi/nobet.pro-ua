@@ -5,22 +5,24 @@ import { ScreenMode } from '@/libs/enums/screen-mode';
 import { NumberInput, SegmentedControl } from '@mantine/core';
 import { DateValue, MonthPickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 interface ISchedulerTopBar {
   onDateChange: (newDate: DateValue) => void;
   setNumberOfRestDays: (restDays: string | number) => void;
-  isRestDayDisabled: boolean;
   handleScreenModeChange: (screenMode: ScreenMode) => void;
 }
 
 export default function SchedulerTopBar({
   onDateChange,
   setNumberOfRestDays,
-  isRestDayDisabled,
   handleScreenModeChange
 }: Readonly<ISchedulerTopBar>) {
   const { monthConfig, assistantList, sectionList } = useContext(NobetContext);
+
+  const isRestDayDayDisabled = useMemo(() => {
+    return false;
+  }, [assistantList]);
 
   return (
     <div className="flex flex-row gap-x-4">
@@ -29,7 +31,7 @@ export default function SchedulerTopBar({
         maxLevel="year"
         allowDeselect={false}
         onChange={onDateChange}
-        defaultValue={new Date()}
+        defaultValue={dayjs().toDate()}
         label="Pick Month"
         leftSection={<CalendarIcon />}
         leftSectionPointerEvents="none"
@@ -41,7 +43,7 @@ export default function SchedulerTopBar({
         value={monthConfig.numberOfRestDays}
         onChange={setNumberOfRestDays}
         min={0}
-        disabled={isRestDayDisabled}
+        disabled={isRestDayDayDisabled}
         clampBehavior="strict"
         allowNegative={false}
         allowDecimal={false}
