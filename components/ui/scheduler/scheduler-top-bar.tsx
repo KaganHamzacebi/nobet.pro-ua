@@ -1,8 +1,8 @@
 import CalendarIcon from '@/components/icons/Calendar';
 import ExportModal from '@/components/ui/export-modal';
-import { NobetContext } from '@/components/ui/scheduler/duty-scheduler';
+import { SchedulerContext } from '@/components/ui/scheduler/scheduler-base';
 import { ScreenMode } from '@/libs/enums/screen-mode';
-import { NumberInput, SegmentedControl } from '@mantine/core';
+import { Group, NumberInput, SegmentedControl } from '@mantine/core';
 import { DateValue, MonthPickerInput } from '@mantine/dates';
 import dayjs from 'dayjs';
 import { useContext, useMemo } from 'react';
@@ -18,14 +18,14 @@ export default function SchedulerTopBar({
   setNumberOfRestDays,
   handleScreenModeChange
 }: Readonly<ISchedulerTopBar>) {
-  const { monthConfig, assistantList, sectionList } = useContext(NobetContext);
+  const { monthConfig, assistantList, sectionList } = useContext(SchedulerContext);
 
   const isRestDayDayDisabled = useMemo(() => {
     return false;
   }, [assistantList]);
 
   return (
-    <div className="flex flex-row gap-x-4">
+    <Group>
       <MonthPickerInput
         minDate={dayjs().toDate()}
         maxLevel="year"
@@ -63,6 +63,6 @@ export default function SchedulerTopBar({
           ]}
         />
       </div>
-    </div>
+    </Group>
   );
 }

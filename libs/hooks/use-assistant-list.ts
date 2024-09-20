@@ -1,8 +1,8 @@
 import { SetStateAction, useCallback, useState } from 'react';
 import { GenerateUUID } from '../helpers/id-generator';
 import { newAssistant } from '../helpers/model-generator';
+import { SelectedDayConfig } from '../models/DutyContext';
 import { IAssistant } from '../models/IAssistant';
-import { SelectedDayConfig } from '../models/NobetContext';
 
 export const useAssistantList = (
   defaultList: IAssistant[],
@@ -41,11 +41,30 @@ export const useAssistantList = (
     []
   );
 
+  const handleClearSelections = () => {
+    setAssistantList(prevState =>
+      prevState.map(assistant => ({
+        ...assistant,
+        selectedDays: {
+          days: [],
+          version: GenerateUUID()
+        },
+        disabledDays: {
+          days: [],
+          version: GenerateUUID()
+        }
+      }))
+    );
+
+    setSelectedDayConfig({});
+  };
+
   return {
     assistantList,
     setAssistantList,
     addNewAssistant,
     removeAssistant,
-    setAssistantProps
+    setAssistantProps,
+    handleClearSelections
   };
 };

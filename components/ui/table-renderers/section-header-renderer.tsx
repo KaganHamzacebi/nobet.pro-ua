@@ -12,7 +12,7 @@ import {
 } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
 import { ChangeEvent, useCallback, useContext, useMemo, useState } from 'react';
-import { NobetContext } from '../scheduler/duty-scheduler';
+import { SchedulerContext } from '../scheduler/scheduler-base';
 
 interface ISectionHeaderRenderer {
   section: ISection;
@@ -31,7 +31,7 @@ export default function SectionHeaderRenderer({
   setSectionProps,
   removeSection
 }: Readonly<ISectionHeaderRenderer>) {
-  const { monthConfig, assistantList } = useContext(NobetContext);
+  const { monthConfig, assistantList } = useContext(SchedulerContext);
 
   const [fields, setFields] = useState({
     color: section.color,

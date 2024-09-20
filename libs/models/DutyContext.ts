@@ -2,7 +2,7 @@ import {
   DefaultAssistantList,
   DefaultMonthConfig,
   DefaultSectionList
-} from '@/libs/mock/nobet.data';
+} from '@/libs/mock/duty.data';
 import { IAssistant } from '@/libs/models/IAssistant';
 import { ISection } from '@/libs/models/ISection';
 import { MonthConfig } from '@/libs/models/MonthConfig';
@@ -18,7 +18,7 @@ export type SelectedDayConfig = Record<
   }
 >;
 
-export interface INobetContext {
+export interface ISchedulerContext {
   screenMode: ScreenMode;
   monthConfig: MonthConfig;
   sectionList: ISection[];
@@ -29,7 +29,7 @@ export interface INobetContext {
   setSelectedDayConfig: (selectedDayConfig: SelectedDayConfig) => void;
 }
 
-export const DefaultNobetContext: INobetContext = {
+export const DefaultSchedulerContext: ISchedulerContext = {
   screenMode: ScreenMode.MonthPicker,
   monthConfig: DefaultMonthConfig,
   sectionList: DefaultSectionList,

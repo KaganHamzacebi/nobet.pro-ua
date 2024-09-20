@@ -1,9 +1,9 @@
 import { ScreenMode } from '@/libs/enums/screen-mode';
-import { Button } from '@mantine/core';
+import { Button, Group } from '@mantine/core';
 import { useContext } from 'react';
 import { TrashSolidIcon } from '../../icons/TrashSolid';
 import AddButton from '../add-button';
-import { NobetContext } from './duty-scheduler';
+import { SchedulerContext } from './scheduler-base';
 
 interface ISchedulerBottomBar {
   addAssistant: () => void;
@@ -16,10 +16,10 @@ export default function SchedulerBottomBar({
   addSection,
   handleClearSelections
 }: Readonly<ISchedulerBottomBar>) {
-  const { screenMode } = useContext(NobetContext);
+  const { screenMode } = useContext(SchedulerContext);
 
   return (
-    <div className="mt-4 flex flex-row gap-x-4">
+    <Group>
       <AddButton label="Add Assistant" onClick={addAssistant} />
       {screenMode === ScreenMode.SectionEditor && (
         <AddButton label="Add New Section" onClick={addSection} />
@@ -32,6 +32,6 @@ export default function SchedulerBottomBar({
           Clear Selections
         </Button>
       )}
-    </div>
+    </Group>
   );
 }

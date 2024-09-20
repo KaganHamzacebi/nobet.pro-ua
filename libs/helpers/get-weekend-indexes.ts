@@ -9,7 +9,7 @@ export const getWeekendDayIndexes = (date: Date): number[] => {
     const currentDay = startOfMonth.date(day);
     if (currentDay.day() === 6 || currentDay.day() === 0) {
       // 6 is Saturday, 0 is Sunday
-      weekends.push(day);
+      weekends.push(day - 1);
     }
   }
 

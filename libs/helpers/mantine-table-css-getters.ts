@@ -1,7 +1,7 @@
 import { ScreenMode } from '../enums/screen-mode';
 import { MonthConfig } from '../models/MonthConfig';
 
-export const mantineTableBodyCellClasses = (
+export const monthCellCssClasses = (
   index: number,
   asssitantId: string,
   monthConfig: MonthConfig,
@@ -10,7 +10,7 @@ export const mantineTableBodyCellClasses = (
 ) => {
   const classes: string[] = [];
 
-  const isWeekend = monthConfig.weekendIndexes.includes(index + 1);
+  const isWeekend = monthConfig.weekendIndexes.includes(index);
   const isUnwanted = unwantedDays[`${asssitantId}-${index}`];
   const isUnwantedMode = screenMode === ScreenMode.UnwantedDayPicker;
 

@@ -1,4 +1,4 @@
-import { NobetContext } from '@/components/ui/scheduler/duty-scheduler';
+import { SchedulerContext } from '@/components/ui/scheduler/scheduler-base';
 import { ScreenMode } from '@/libs/enums/screen-mode';
 import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
@@ -22,7 +22,7 @@ export default function MonthCellRenderer({ dayIndex, assistant }: Readonly<IMon
     setAssistantList,
     selectedDayConfig,
     setSelectedDayConfig
-  } = useContext(NobetContext);
+  } = useContext(SchedulerContext);
   const [opened, setOpened] = useState(false);
   const getSelectedSection = () => {
     return sectionList.find(s => s.id === assistant.selectedDays.days[dayIndex]?.id);

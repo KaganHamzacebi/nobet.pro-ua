@@ -1,8 +1,8 @@
 import { getRandomColor } from '@/libs/helpers/color-generator';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
+import { SelectedDayConfig } from '@/libs/models/DutyContext';
 import { IAssistant } from '@/libs/models/IAssistant';
 import { ISection } from '@/libs/models/ISection';
-import { SelectedDayConfig } from '@/libs/models/NobetContext';
 
 export const newAssistant = (name?: string): IAssistant => {
   return {

@@ -3,7 +3,7 @@ import { ISection } from '@/libs/models/ISection';
 import { Button, Modal, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useContext, useMemo } from 'react';
-import { NobetContext } from './scheduler/duty-scheduler';
+import { SchedulerContext } from './scheduler/scheduler-base';
 
 interface IExportModal {
   assistantList: IAssistant[];
@@ -11,7 +11,7 @@ interface IExportModal {
 }
 
 export default function ExportModal({ assistantList, sectionList }: Readonly<IExportModal>) {
-  const { monthConfig } = useContext(NobetContext);
+  const { monthConfig } = useContext(SchedulerContext);
   const [opened, { open, close }] = useDisclosure(false);
 
   const headerData = useMemo(() => {
@@ -29,17 +29,17 @@ export default function ExportModal({ assistantList, sectionList }: Readonly<IEx
         const sectionIndex = headerData.findIndex(
           h => h === assistant.selectedDays.days[dayIndex].name
         );
-        data[dayIndex - 1][sectionIndex] = assistant.name;
+        data[dayIndex][sectionIndex] = assistant.name;
       }
     }
 
     return data;
-  }, [assistantList, sectionList]);
+  }, [assistantList, headerData, monthConfig.datesInMonth, sectionList.length]);
 
   const headers = (
     <Table.Tr>
       {headerData.map((s, i) => (
-        <Table.Th key={`header-${i}`} className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
+        <Table.Th key={`${s}-${i}`} className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
           {s}
         </Table.Th>
       ))}
@@ -49,7 +49,7 @@ export default function ExportModal({ assistantList, sectionList }: Readonly<IEx
   const rows = tableData.map((row: string[]) => (
     <Table.Tr key={`row-${row[0]}`}>
       {row.map((cell, i) => (
-        <Table.Th key={`cell-${i}`} className={`text-center ${i === 0 && 'w-4 bg-onyx'}`}>
+        <Table.Th key={`${cell}-${i}`} className={`text-center ${i === 0 && 'w-4 bg-onyx'}`}>
           {cell}
         </Table.Th>
       ))}

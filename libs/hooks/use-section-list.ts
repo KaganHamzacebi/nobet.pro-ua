@@ -1,5 +1,6 @@
+import { newSection } from '@/libs/helpers/model-generator';
+import { ISection } from '@/libs/models/ISection';
 import { useCallback, useState } from 'react';
-import { ISection } from '../models/ISection';
 
 export const useSectionList = (defaultList: ISection[]) => {
   const [sectionList, setSectionList] = useState(defaultList);
@@ -9,13 +10,10 @@ export const useSectionList = (defaultList: ISection[]) => {
       ...prevState,
       newSection(`New Section - ${prevState.length + 1}`)
     ]);
-
-    setRerenderColumns(prev => !prev);
   }, []);
 
   const removeSection = useCallback((sectionId: ISection['id']) => {
     setSectionList(prevState => prevState.filter(i => i.id !== sectionId));
-    setRerenderColumns(prev => !prev);
   }, []);
 
   const setSectionProps = useCallback((sectionId: ISection['id'], props: Partial<ISection>) => {
@@ -23,4 +21,12 @@ export const useSectionList = (defaultList: ISection[]) => {
       prevState.map(section => (section.id === sectionId ? { ...section, ...props } : section))
     );
   }, []);
+
+  return {
+    sectionList,
+    setSectionList,
+    addSection,
+    removeSection,
+    setSectionProps
+  };
 };
