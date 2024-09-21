@@ -1,5 +1,5 @@
 import DashboardNavbar from '@/components/ui/dashboard-navbar';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 interface IDashboardLayout {
   children: ReactNode;
@@ -8,7 +8,9 @@ interface IDashboardLayout {
 export default function DashboardLayout({ children }: Readonly<IDashboardLayout>) {
   return (
     <>
-      <DashboardNavbar />
+      <Suspense fallback={<div>Loading...</div>}>
+        <DashboardNavbar />
+      </Suspense>
       {children}
     </>
   );
