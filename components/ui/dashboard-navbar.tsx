@@ -1,20 +1,27 @@
 'use client';
 
-import { AppShell } from '@mantine/core';
+import { AppShell, Skeleton } from '@mantine/core';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
+
+const navbarWidth = 300;
+
+const NavbarSkeleton = () => <Skeleton width={navbarWidth} height="100%" />;
 
 export default function DashboardNavbar() {
   const searchParams = useSearchParams();
   const isNavbarCollapsed = searchParams.get('isNavbarCollapsed') === 'true';
 
   return (
-    <AppShell
-      navbar={{
-        width: 300,
-        breakpoint: 'sm',
-        collapsed: { mobile: false, desktop: isNavbarCollapsed }
-      }}>
-      <AppShell.Navbar>Navbar</AppShell.Navbar>
-    </AppShell>
+    <Suspense fallback={<NavbarSkeleton />}>
+      <AppShell
+        navbar={{
+          width: navbarWidth,
+          breakpoint: 'sm',
+          collapsed: { mobile: false, desktop: isNavbarCollapsed }
+        }}>
+        <AppShell.Navbar>Navbar</AppShell.Navbar>
+      </AppShell>
+    </Suspense>
   );
 }
