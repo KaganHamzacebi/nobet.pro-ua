@@ -24,9 +24,11 @@ export default function MonthCellRenderer({ dayIndex, assistant }: Readonly<IMon
     setSelectedDayConfig
   } = useContext(SchedulerContext);
   const [opened, setOpened] = useState(false);
+
   const getSelectedSection = () => {
     return sectionList.find(s => s.id === assistant.selectedDays.days[dayIndex]?.id);
   };
+
   const [selectedSection, setSelectedSection] = useState<ISection | undefined>(
     getSelectedSection()
   );
