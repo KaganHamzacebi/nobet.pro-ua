@@ -1,8 +1,8 @@
 import { getRandomColor } from '@/libs/helpers/color-generator';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
-import { SelectedDayConfig } from '@/models/NobetContext';
+import { SelectedDayConfig } from '@/libs/models/DutyContext';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
 
 export const newAssistant = (name?: string): IAssistant => {
   return {
@@ -29,9 +29,7 @@ export const newSection = (sectionName?: string): ISection => {
   };
 };
 
-export const newSelectedDayConfig = (
-  sectionId: string
-): SelectedDayConfig[number] => {
+export const newSelectedDayConfig = (sectionId: string): SelectedDayConfig[number] => {
   return {
     sectionIds: new Set<string>([sectionId]),
     version: GenerateUUID()

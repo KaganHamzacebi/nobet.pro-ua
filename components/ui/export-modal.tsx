@@ -1,20 +1,17 @@
-import { IAssistant } from '@/app/_models/IAssistant';
-import { ISection } from '@/app/_models/ISection';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
 import { Button, Modal, Table } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { FC, useContext, useMemo } from 'react';
-import { NobetContext } from './NobetScheduler';
+import { useContext, useMemo } from 'react';
+import { SchedulerContext } from './scheduler/scheduler-base';
 
 interface IExportModal {
   assistantList: IAssistant[];
   sectionList: ISection[];
 }
 
-export const ExportModal: FC<IExportModal> = ({
-  assistantList,
-  sectionList
-}) => {
-  const { monthConfig } = useContext(NobetContext);
+export default function ExportModal({ assistantList, sectionList }: Readonly<IExportModal>) {
+  const { monthConfig } = useContext(SchedulerContext);
   const [opened, { open, close }] = useDisclosure(false);
 
   const headerData = useMemo(() => {
@@ -24,10 +21,7 @@ export const ExportModal: FC<IExportModal> = ({
   const tableData = useMemo(() => {
     const data: string[][] = Array(monthConfig.datesInMonth)
       .fill(null)
-      .map((_, index) => [
-        String(index + 1),
-        ...Array(sectionList.length).fill('')
-      ]);
+      .map((_, index) => [String(index + 1), ...Array(sectionList.length).fill('')]);
 
     for (const assistant of assistantList) {
       const days = Object.keys(assistant.selectedDays.days).map(i => Number(i));
@@ -35,19 +29,17 @@ export const ExportModal: FC<IExportModal> = ({
         const sectionIndex = headerData.findIndex(
           h => h === assistant.selectedDays.days[dayIndex].name
         );
-        data[dayIndex - 1][sectionIndex] = assistant.name;
+        data[dayIndex][sectionIndex] = assistant.name;
       }
     }
 
     return data;
-  }, [assistantList, sectionList]);
+  }, [assistantList, headerData, monthConfig.datesInMonth, sectionList.length]);
 
   const headers = (
     <Table.Tr>
       {headerData.map((s, i) => (
-        <Table.Th
-          key={`header-${i}`}
-          className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
+        <Table.Th key={`${s}-${i}`} className={`bg-onyx text-center ${i === 0 && 'w-4'}`}>
           {s}
         </Table.Th>
       ))}
@@ -57,9 +49,7 @@ export const ExportModal: FC<IExportModal> = ({
   const rows = tableData.map((row: string[]) => (
     <Table.Tr key={`row-${row[0]}`}>
       {row.map((cell, i) => (
-        <Table.Th
-          key={`cell-${i}`}
-          className={`text-center ${i === 0 && 'w-4 bg-onyx'}`}>
+        <Table.Th key={`${cell}-${i}`} className={`text-center ${i === 0 && 'w-4 bg-onyx'}`}>
           {cell}
         </Table.Th>
       ))}
@@ -88,4 +78,4 @@ export const ExportModal: FC<IExportModal> = ({
       <Button onClick={open}>Export</Button>
     </>
   );
-};
+}

@@ -1,27 +1,22 @@
 import { GenerateUUID } from '@/libs/helpers/id-generator';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
 import { NumberInput } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
-import { FC, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
-interface ISectionCellRendererProps {
+interface ISectionCellRenderer {
   assistant: IAssistant;
   section: ISection;
-  setAssistantProps: (
-    assistantId: IAssistant['id'],
-    props: Partial<IAssistant>
-  ) => void;
+  setAssistantProps: (assistantId: IAssistant['id'], props: Partial<IAssistant>) => void;
 }
 
-export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
+export default function SectionCellRenderer({
   assistant,
   section,
   setAssistantProps
-}) => {
-  const [count, setCount] = useState<number>(
-    assistant.sectionConfig.counts[section.id] ?? 0
-  );
+}: Readonly<ISectionCellRenderer>) {
+  const [count, setCount] = useState<number>(assistant.sectionConfig.counts[section.id] ?? 0);
 
   const setAssistantSectionConfig = useDebouncedCallback((count: number) => {
     setAssistantProps(assistant.id, {
@@ -41,9 +36,7 @@ export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
   }, [count]);
 
   const minimumSelectableDutyCount = useMemo(() => {
-    return Object.values(assistant.selectedDays.days).filter(
-      sec => sec.id === section.id
-    ).length;
+    return Object.values(assistant.selectedDays.days).filter(sec => sec.id === section.id).length;
   }, [assistant.selectedDays.version]);
 
   return (
@@ -57,4 +50,4 @@ export const SectionCellRenderer: FC<ISectionCellRendererProps> = ({
       />
     </div>
   );
-};
+}

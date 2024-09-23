@@ -1,6 +1,6 @@
 import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { swatches } from '@/libs/helpers/color-generator';
-import { ISection } from '@/models/ISection';
+import { ISection } from '@/libs/models/ISection';
 import {
   ActionIcon,
   ColorPicker,
@@ -11,22 +11,12 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
-import {
-  ChangeEvent,
-  FC,
-  useCallback,
-  useContext,
-  useMemo,
-  useState
-} from 'react';
-import { NobetContext } from './NobetScheduler';
+import { ChangeEvent, useCallback, useContext, useMemo, useState } from 'react';
+import { SchedulerContext } from '../scheduler/scheduler-base';
 
 interface ISectionHeaderRenderer {
   section: ISection;
-  setSectionProps: (
-    sectionId: ISection['id'],
-    props: Partial<ISection>
-  ) => void;
+  setSectionProps: (sectionId: ISection['id'], props: Partial<ISection>) => void;
   removeSection: (sectionId: ISection['id']) => void;
 }
 
@@ -36,24 +26,21 @@ const getBackgroundClass = (totalDayCount: number, datesInMonth: number) => {
   return 'bg-attention-700';
 };
 
-export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
+export default function SectionHeaderRenderer({
   section,
   setSectionProps,
   removeSection
-}) => {
-  const { monthConfig, assistantList } = useContext(NobetContext);
+}: Readonly<ISectionHeaderRenderer>) {
+  const { monthConfig, assistantList } = useContext(SchedulerContext);
 
   const [fields, setFields] = useState({
     color: section.color,
     name: section.name
   });
 
-  const setDebouncedFields = useDebouncedCallback(
-    (props: Partial<ISection>) => {
-      setSectionProps(section.id, props);
-    },
-    500
-  );
+  const setDebouncedFields = useDebouncedCallback((props: Partial<ISection>) => {
+    setSectionProps(section.id, props);
+  }, 500);
 
   const totalDayCount = useMemo(() => {
     return assistantList.reduce((prev, curr) => {
@@ -74,33 +61,23 @@ export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
     setFields(prev => ({ ...prev, color }));
   }, []);
 
-  const handleNameChange = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) => {
-      setFields(prev => ({ ...prev, name: event.target.value }));
-    },
-    []
-  );
+  const handleNameChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setFields(prev => ({ ...prev, name: event.target.value }));
+  }, []);
 
   return (
     <Group className="w-full min-w-[200px]" gap={8} wrap="nowrap">
       <TextInput size="xs" value={fields.name} onChange={handleNameChange} />
       <Menu>
         <Menu.Target>
-          <ColorSwatch
-            size={20}
-            className="cursor-pointer"
-            color={fields.color}
-          />
+          <ColorSwatch size={20} className="cursor-pointer" color={fields.color} />
         </Menu.Target>
         <Menu.Dropdown>
           <ColorPicker onChange={handleColorChange} swatches={swatches} />
         </Menu.Dropdown>
       </Menu>
       <Tooltip label={`Remove ${section.name}`}>
-        <ActionIcon
-          size="sm"
-          variant="transparent"
-          onClick={() => removeSection(section.id)}>
+        <ActionIcon size="sm" variant="transparent" onClick={() => removeSection(section.id)}>
           <TrashSolidIcon className="text-attention hover:text-attention-hover" />
         </ActionIcon>
       </Tooltip>
@@ -110,4 +87,4 @@ export const SectionHeaderRenderer: FC<ISectionHeaderRenderer> = ({
       </div>
     </Group>
   );
-};
+}

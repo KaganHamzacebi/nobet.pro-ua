@@ -1,25 +1,20 @@
-import { ScreenMode } from '@/app/_models/ScreenMode';
-import { NobetContext } from '@/components/ui/NobetScheduler';
+import { SchedulerContext } from '@/components/ui/scheduler/scheduler-base';
+import { ScreenMode } from '@/libs/enums/screen-mode';
 import { getDisabledDays } from '@/libs/helpers/disabled-day-calculator';
 import { GenerateUUID } from '@/libs/helpers/id-generator';
 import { newSelectedDayConfig } from '@/libs/helpers/model-generator';
-import { IAssistant } from '@/models/IAssistant';
-import { ISection } from '@/models/ISection';
+import { IAssistant } from '@/libs/models/IAssistant';
+import { ISection } from '@/libs/models/ISection';
 import { Checkbox, Menu, MenuDropdown, MenuItem, Tooltip } from '@mantine/core';
 import { useDidUpdate } from '@mantine/hooks';
-import { FC, useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 
-interface IMonthCellProps {
+interface IMonthCellRenderer {
   dayIndex: number;
   assistant: IAssistant;
-  clearSelectionsTrigger: boolean;
 }
 
-export const MonthCellRenderer: FC<IMonthCellProps> = ({
-  dayIndex,
-  assistant,
-  clearSelectionsTrigger
-}) => {
+export default function MonthCellRenderer({ dayIndex, assistant }: Readonly<IMonthCellRenderer>) {
   const {
     screenMode,
     monthConfig,
@@ -27,13 +22,13 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
     setAssistantList,
     selectedDayConfig,
     setSelectedDayConfig
-  } = useContext(NobetContext);
+  } = useContext(SchedulerContext);
   const [opened, setOpened] = useState(false);
+
   const getSelectedSection = () => {
-    return sectionList.find(
-      s => s.id === assistant.selectedDays.days[dayIndex]?.id
-    );
+    return sectionList.find(s => s.id === assistant.selectedDays.days[dayIndex]?.id);
   };
+
   const [selectedSection, setSelectedSection] = useState<ISection | undefined>(
     getSelectedSection()
   );
@@ -48,13 +43,11 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
 
   const filteredSectionList = useMemo(() => {
     return sectionList.filter(s => {
-      const isColumnSelectedByAnotherAssistant = selectedDayConfig[
-        dayIndex
-      ]?.sectionIds.has(s.id);
+      const isColumnSelectedByAnotherAssistant = selectedDayConfig[dayIndex]?.sectionIds.has(s.id);
       const sectionDutyCount = assistant.sectionConfig.counts[s.id] ?? 0;
-      const assistantCountForSection = Object.values(
-        assistant.selectedDays.days
-      ).filter(section => section.id === s.id).length;
+      const assistantCountForSection = Object.values(assistant.selectedDays.days).filter(
+        section => section.id === s.id
+      ).length;
       const isSectionReachedMax = assistantCountForSection === sectionDutyCount;
       return !isColumnSelectedByAnotherAssistant && !isSectionReachedMax;
     });
@@ -71,12 +64,8 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
   const isDisabled = useMemo(() => {
     const isDisabledDay = assistant.disabledDays.days.includes(dayIndex);
     const isAllSectionsAreFull = filteredSectionList.length === 0;
-    const isReachedMax =
-      maxPossibleDutyCount === Object.keys(assistant.selectedDays.days).length;
-    return (
-      (isDisabledDay || isAllSectionsAreFull || isReachedMax) &&
-      selectedSection == undefined
-    );
+    const isReachedMax = maxPossibleDutyCount === Object.keys(assistant.selectedDays.days).length;
+    return (isDisabledDay || isAllSectionsAreFull || isReachedMax) && selectedSection == undefined;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     assistant.disabledDays.version,
@@ -89,13 +78,10 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
 
   useDidUpdate(() => {
     const updatedAssistant = { ...assistant };
-    if (selectedSection)
-      updatedAssistant.selectedDays.days[dayIndex] = selectedSection;
+    if (selectedSection) updatedAssistant.selectedDays.days[dayIndex] = selectedSection;
     else delete updatedAssistant.selectedDays.days[dayIndex];
     updatedAssistant.selectedDays.version = GenerateUUID();
-    const selectedDayIndexes = Object.keys(
-      updatedAssistant.selectedDays.days
-    ).map(i => Number(i));
+    const selectedDayIndexes = Object.keys(updatedAssistant.selectedDays.days).map(i => Number(i));
     updatedAssistant.disabledDays.days = getDisabledDays(
       selectedDayIndexes,
       monthConfig.numberOfRestDays
@@ -109,8 +95,10 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
   }, [selectedSection?.id, monthConfig.numberOfRestDays]);
 
   useDidUpdate(() => {
-    setSelectedSection(undefined);
-  }, [clearSelectionsTrigger]);
+    if (assistant.selectedDays.days[dayIndex] == undefined) {
+      setSelectedSection(undefined);
+    }
+  }, [assistant.selectedDays.version]);
 
   const selectSection = useCallback(
     (section: ISection | undefined) => {
@@ -170,4 +158,4 @@ export const MonthCellRenderer: FC<IMonthCellProps> = ({
       </Menu>
     </div>
   );
-};
+}
