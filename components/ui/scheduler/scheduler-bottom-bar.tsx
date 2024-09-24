@@ -1,9 +1,9 @@
 import { ScreenMode } from '@/libs/enums/screen-mode';
 import { Button, Group } from '@mantine/core';
 import { useContext } from 'react';
-import { TrashSolidIcon } from '../../icons/TrashSolid';
 import AddButton from '../add-button';
 import { SchedulerContext } from './scheduler-base';
+import { IconTrashFilled } from '@tabler/icons-react';
 
 interface ISchedulerBottomBar {
   addAssistant: () => void;
@@ -26,7 +26,7 @@ export default function SchedulerBottomBar({
       )}
       {screenMode === ScreenMode.MonthPicker && (
         <Button
-          leftSection={<TrashSolidIcon className="size-4" />}
+          leftSection={<IconTrashFilled />}
           onClick={handleClearSelections}
           className="bg-attention hover:bg-attention-hover">
           Clear Selections

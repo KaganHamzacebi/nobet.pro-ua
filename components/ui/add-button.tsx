@@ -1,5 +1,5 @@
-import AddIcon from '@/components/icons/Add';
 import { Button } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 
 interface IAddButton {
   onClick?: () => void;
@@ -8,7 +8,7 @@ interface IAddButton {
 
 export default function AddButton({ label, onClick }: Readonly<IAddButton>) {
   return (
-    <Button className="add-button" leftSection={<AddIcon />} onClick={onClick}>
+    <Button className="add-button" leftSection={<IconPlus />} onClick={onClick}>
       {label}
     </Button>
   );

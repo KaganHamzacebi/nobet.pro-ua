@@ -1,5 +1,5 @@
 import Providers from '@/app/providers';
-import MainLayout from '@/components/ui/main-layout';
+import Shell from '@/components/ui/shell';
 import '@/styles/globals.scss';
 import { ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next';
@@ -31,7 +31,7 @@ export default function RootLayout({ children }: Readonly<IRootLayout>) {
       </head>
       <body className={inter.className}>
         <Providers>
-          <MainLayout>{children}</MainLayout>
+          <Shell>{children}</Shell>
         </Providers>
         <Metrics />
       </body>

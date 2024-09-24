@@ -1,7 +1,7 @@
-import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { IAssistant } from '@/libs/models/IAssistant';
 import { ActionIcon, TextInput, Tooltip } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
+import { IconTrashFilled } from '@tabler/icons-react';
 import { useState } from 'react';
 
 interface IAssistantNameRenderer {
@@ -30,7 +30,7 @@ export default function AssistantNameRenderer({
       <TextInput size="xs" value={name} onChange={e => setName(e.target.value)} />
       <Tooltip label={`Remove ${name}`}>
         <ActionIcon size="sm" variant="transparent" onClick={() => removeAssistant(assistant)}>
-          <TrashSolidIcon className="text-attention hover:text-attention-hover" />
+          <IconTrashFilled className="text-attention hover:text-attention-hover" />
         </ActionIcon>
       </Tooltip>
     </div>
