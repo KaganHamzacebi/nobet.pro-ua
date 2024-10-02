@@ -20,7 +20,7 @@ interface IRootLayout {
 
 export default function RootLayout({ children }: Readonly<IRootLayout>) {
   return (
-    <html lang="en">
+    <html lang="en" className="min-h-screen">
       <head>
         <title>Nöbet Pro</title>
         <ColorSchemeScript />
@@ -29,7 +29,7 @@ export default function RootLayout({ children }: Readonly<IRootLayout>) {
           content="minimum-scale=1, initial-scale=1, width=device-width, user-scalable=no"
         />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen`}>
         <Providers>
           <Shell>{children}</Shell>
         </Providers>

@@ -10,9 +10,9 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
+import { IconTrashFilled } from '@tabler/icons-react';
 import { ChangeEvent, useCallback, useContext, useMemo, useState } from 'react';
 import { SchedulerContext } from '../scheduler/scheduler-base';
-import { IconTrashFilled } from '@tabler/icons-react';
 
 interface ISectionHeaderRenderer {
   section: ISection;

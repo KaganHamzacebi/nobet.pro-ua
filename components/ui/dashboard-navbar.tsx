@@ -1,8 +1,7 @@
 'use client';
 
-export default function DashboardNavbar() {
+import { AppShell } from '@mantine/core';
 
-  return (
-    <div>navbar</div>
-  );
+export default function DashboardNavbar() {
+  return <AppShell.Navbar>Navbar</AppShell.Navbar>;
 }

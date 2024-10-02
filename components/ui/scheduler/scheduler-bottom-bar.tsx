@@ -1,9 +1,9 @@
 import { ScreenMode } from '@/libs/enums/screen-mode';
 import { Button, Group } from '@mantine/core';
+import { IconTrashFilled } from '@tabler/icons-react';
 import { useContext } from 'react';
 import AddButton from '../add-button';
 import { SchedulerContext } from './scheduler-base';
-import { IconTrashFilled } from '@tabler/icons-react';
 
 interface ISchedulerBottomBar {
   addAssistant: () => void;
