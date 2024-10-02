@@ -3,13 +3,15 @@
 import NotificationCenter from '@/components/ui/notification-center';
 import { MantineProvider } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import { ReactNode } from 'react';
+import { ReactNode, Suspense } from 'react';
 
 export default function Providers({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <MantineProvider defaultColorScheme="dark">
       <Notifications />
-      <NotificationCenter />
+      <Suspense>
+        <NotificationCenter />
+      </Suspense>
       {children}
     </MantineProvider>
   );
