@@ -32,11 +32,13 @@
     "sass": "^1.77.8"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@typescript-eslint/eslint-plugin": "^8.3.0",
     "@typescript-eslint/parser": "^8.3.0",
+    "bcryptjs": "^2.4.3",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
     "eslint-config-prettier": "^9.1.0",

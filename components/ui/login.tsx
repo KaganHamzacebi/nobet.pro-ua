@@ -1,7 +1,7 @@
 'use client';
 
 import { LoginType } from '@/libs/enums/LoginType';
-import { emailLogin, emailSignup, googleLogin } from '@/libs/supabase/actions';
+import { emailLogin, emailSignup, googleLogin, resetPassword } from '@/libs/supabase/actions';
 import {
   Anchor,
   Button,
@@ -16,11 +16,12 @@ import { useForm } from '@mantine/form';
 import { IconAt, IconBrandGoogleFilled, IconLock } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 export default function Login() {
   const searchParams = useSearchParams();
   const isSignup = searchParams.get('signup') === 'true';
+  const isForgotPassword = searchParams.get('forgotPassword') === 'true';
 
   const [loading, setLoading] = useState<{ [K in LoginType]: boolean }>(
     Object.values(LoginType).reduce(
@@ -31,6 +32,12 @@ export default function Login() {
       {} as Record<LoginType, boolean>
     )
   );
+
+  const actionButtonLabel = () => {
+    if (isSignup) return 'Sign Up';
+    else if (isForgotPassword) return 'Recover Password';
+    else return 'Log In';
+  };
 
   const setLoadingState = (key: LoginType, state: boolean) => {
     setLoading(prevState => ({
@@ -62,19 +69,27 @@ export default function Login() {
     },
     validate: {
       email: value => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
-      password: value => (value.length >= 4 ? null : 'Password should has minimum length of 4')
+      password: value => (value.length >= 6 ? null : 'Password should has minimum length of 6')
     }
   });
 
-  const handleEmailLogin = (values: { email: string; password: string }) => {
-    setLoading(prevState => ({
-      ...prevState,
-      email: true
-    }));
-  };
+  const handleFormAction = useCallback(
+    async (values: typeof form.values) => {
+      setLoadingState(LoginType.Email, true);
+      if (isSignup) {
+        await emailSignup(values);
+      } else if (isForgotPassword) {
+        await resetPassword(values.email);
+      } else {
+        await emailLogin(values);
+      }
+      setLoadingState(LoginType.Email, false);
+    },
+    [form, isForgotPassword, isSignup]
+  );
 
   return (
-    <form className="w-full max-w-[400px]" onSubmit={form.onSubmit(handleEmailLogin)}>
+    <form className="w-full max-w-[400px]" onSubmit={form.onSubmit(handleFormAction)}>
       <Stack className="rounded border border-silver border-opacity-50 p-4">
         <Text fw={600} size="lg">
           Login
@@ -102,30 +117,18 @@ export default function Login() {
             key={form.key('email')}
             {...form.getInputProps('email')}
           />
-          <PasswordInput
-            variant="default"
-            label="Password"
-            leftSection={<IconLock size={16} />}
-            key={form.key('password')}
-            {...form.getInputProps('password')}
-          />
-          {isSignup ? (
-            <Button
-              loading={loading[LoginType.Email]}
-              disabled={isDisabled}
-              type="submit"
-              formAction={emailSignup}>
-              Sign Up
-            </Button>
-          ) : (
-            <Button
-              loading={loading[LoginType.Email]}
-              disabled={isDisabled}
-              type="submit"
-              formAction={emailLogin}>
-              Log In
-            </Button>
+          {!isForgotPassword && (
+            <PasswordInput
+              variant="default"
+              label="Password"
+              leftSection={<IconLock size={16} />}
+              key={form.key('password')}
+              {...form.getInputProps('password')}
+            />
           )}
+          <Button loading={loading[LoginType.Email]} disabled={isDisabled} type="submit">
+            {actionButtonLabel()}
+          </Button>
         </Stack>
         <Stack mt={2} gap="xs">
           <Anchor

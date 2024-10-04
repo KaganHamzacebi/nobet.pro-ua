@@ -1,6 +1,5 @@
 'use server';
 
-import { type OAuthResponse } from '@supabase/supabase-js';
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
@@ -12,59 +11,60 @@ const origin = headers().get('origin');
 
 const successLoginNext = `/dashboard?${NotificationType.LoginSuccess}=true`;
 
-const handleRedirect = ({ data, error }: OAuthResponse) => {
-  if (error) {
-    console.log(error);
-  } else {
-    return redirect(data.url);
-  }
-};
-
-const emailLogin = async (formData: FormData) => {
-  console.log('here');
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string
+export const emailLogin = async (formData: { email: string; password: string }) => {
+  const credentials = {
+    email: formData.email,
+    password: formData.password
   };
 
-  const { error } = await supabase.auth.signInWithPassword(data);
-  console.log(error);
+  const { error } = await supabase.auth.signInWithPassword(credentials);
 
   if (error) {
-    redirect(`/?${NotificationType.LoginFailed}=true`);
+    console.log(error);
+    redirect(`/?${NotificationType.LoginFailed}=${error.message}`);
   }
 
   revalidatePath('/dashboard', 'layout');
   redirect('/dashboard');
 };
 
-export async function emailSignup(formData: FormData) {
-  console.log('here2');
+export async function emailSignup(formData: { email: string; password: string }) {
   const supabase = createClient();
 
-  const data = {
-    email: formData.get('email') as string,
-    password: formData.get('password') as string
+  const credentials = {
+    email: formData.email,
+    password: formData.password
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { error } = await supabase.auth.signUp(credentials);
 
   if (error) {
-    redirect('/error');
+    console.log(error);
+    redirect(`/?${NotificationType.SignupFailed}=${error.message}`);
   }
 
+  revalidatePath('/dashboard');
   redirect('/dashboard');
 }
 
-const googleLogin = async () => {
-  const response = await supabase.auth.signInWithOAuth({
+export const resetPassword = async (email: string) => {
+  const supabase = createClient();
+  const { error } = await supabase.auth.resetPasswordForEmail(email);
+  console.log(error);
+  redirect('/paswordReset=true');
+};
+
+export const googleLogin = async () => {
+  const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: `${origin}/auth/callback?next=${successLoginNext}`
     }
   });
 
-  handleRedirect(response);
+  if (error) {
+    console.log(error);
+  } else {
+    return redirect(data.url);
+  }
 };
-
-export { emailLogin, googleLogin };

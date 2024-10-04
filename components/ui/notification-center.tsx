@@ -30,6 +30,11 @@ const notificationMap = {
     handler: showSuccessNotification,
     title: 'Logged Out',
     message: 'Successfully logged out'
+  },
+  [NotificationType.SignupFailed]: {
+    handler: showErrorNotification,
+    title: 'Signup Failed',
+    message: 'Signup failed for an unknown reason, please try again later'
   }
 };
 
@@ -39,8 +44,10 @@ export default function NotificationCenter() {
 
   useEffect(() => {
     Object.entries(notificationMap).forEach(([key, { handler, title, message }]) => {
-      if (params.get(key)) {
-        handler({ title, message });
+      const paramContent = params.get(key);
+      if (paramContent) {
+        const notificationMessage = paramContent !== 'true' ? paramContent : message;
+        handler({ title, message: notificationMessage });
         removeQueryParam(key, router, params);
       }
     });

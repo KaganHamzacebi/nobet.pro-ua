@@ -1,5 +1,5 @@
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconCross, IconExclamationMark } from '@tabler/icons-react';
+import { IconCheck, IconExclamationMark } from '@tabler/icons-react';
 
 interface NotificationProps {
   title: string;
@@ -8,7 +8,6 @@ interface NotificationProps {
 }
 
 const CheckIcon = <IconCheck stroke={3} />;
-const CrossIcon = <IconCross stroke={3} />;
 const WarningIcon = <IconExclamationMark stroke={3} />;
 
 const commonProps = (title: string, message: string, isLoading?: boolean) => ({
@@ -38,7 +37,7 @@ export const showWarningNotification = ({ title, message, isLoading }: Notificat
 export const showErrorNotification = ({ title, message, isLoading }: NotificationProps) => {
   notifications.show({
     color: 'red',
-    icon: CrossIcon,
+    icon: WarningIcon,
     ...commonProps(title, message, isLoading)
   });
 };
