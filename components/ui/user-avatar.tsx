@@ -1,11 +1,12 @@
 import { NotificationType } from '@/libs/enums/NotificationType';
-import { getUser, signOut } from '@/libs/supabase/client';
+import { getUser } from '@/libs/supabase/client';
+import { signOut } from '@/libs/supabase/login-actions';
 import { Avatar, Group, Menu, Text } from '@mantine/core';
 import { User } from '@supabase/supabase-js';
 import { IconLayoutDashboardFilled, IconLogout } from '@tabler/icons-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const iconSize = 16;
 
@@ -22,11 +23,11 @@ export default function UserAvatar() {
     fetchUser();
   }, []);
 
-  const handleSignout = () => {
-    signOut();
+  const handleSignout = useCallback(async () => {
+    await signOut();
     router.push(`/?${NotificationType.SignoutSuccess}=true`);
     setUser(null);
-  };
+  }, [router]);
 
   const menuItems = useMemo(
     () => (
@@ -43,7 +44,7 @@ export default function UserAvatar() {
         </Menu.Item>
       </>
     ),
-    []
+    [handleSignout]
   );
 
   if (!user) return;

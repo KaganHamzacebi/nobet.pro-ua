@@ -1,12 +1,10 @@
 import { createServerClient } from '@supabase/ssr';
-import { cookies, headers } from 'next/headers';
-import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
-export const signOut = () => {
-  const origin = headers().get('origin');
+export const getUser = async () => {
   const supabase = createClient();
-  supabase.auth.signOut();
-  redirect(`${origin}`);
+  const user = (await supabase.auth.getUser()).data.user;
+  return user;
 };
 
 export function createClient() {

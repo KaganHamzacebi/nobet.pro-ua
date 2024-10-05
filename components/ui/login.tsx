@@ -1,7 +1,7 @@
 'use client';
 
 import { LoginType } from '@/libs/enums/LoginType';
-import { emailLogin, emailSignup, googleLogin, resetPassword } from '@/libs/supabase/actions';
+import { emailLogin, emailSignup, googleLogin, resetPassword } from '@/libs/supabase/login-actions';
 import {
   Anchor,
   Button,
