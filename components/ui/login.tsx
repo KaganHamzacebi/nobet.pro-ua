@@ -68,7 +68,7 @@ export default function Login() {
       password: ''
     },
     validate: {
-      email: value => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+      email: value => (/^[\w-\\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value) ? null : 'Invalid email'),
       password: value => (value.length >= 6 ? null : 'Password should has minimum length of 6')
     }
   });
