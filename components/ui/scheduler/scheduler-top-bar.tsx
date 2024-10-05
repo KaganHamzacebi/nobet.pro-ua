@@ -1,9 +1,9 @@
-import CalendarIcon from '@/components/icons/Calendar';
 import ExportModal from '@/components/ui/export-modal';
 import { SchedulerContext } from '@/components/ui/scheduler/scheduler-base';
 import { ScreenMode } from '@/libs/enums/screen-mode';
 import { Group, NumberInput, SegmentedControl } from '@mantine/core';
 import { DateValue, MonthPickerInput } from '@mantine/dates';
+import { IconCalendar } from '@tabler/icons-react';
 import dayjs from 'dayjs';
 import { useContext, useMemo } from 'react';
 
@@ -33,7 +33,7 @@ export default function SchedulerTopBar({
         onChange={onDateChange}
         defaultValue={dayjs().toDate()}
         label="Pick Month"
-        leftSection={<CalendarIcon />}
+        leftSection={<IconCalendar />}
         leftSectionPointerEvents="none"
         className="w-[10rem]"
       />

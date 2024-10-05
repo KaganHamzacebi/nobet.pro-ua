@@ -1,4 +1,3 @@
-import { TrashSolidIcon } from '@/components/icons/TrashSolid';
 import { swatches } from '@/libs/helpers/color-generator';
 import { ISection } from '@/libs/models/ISection';
 import {
@@ -11,6 +10,7 @@ import {
   Tooltip
 } from '@mantine/core';
 import { useDebouncedCallback, useDidUpdate } from '@mantine/hooks';
+import { IconTrashFilled } from '@tabler/icons-react';
 import { ChangeEvent, useCallback, useContext, useMemo, useState } from 'react';
 import { SchedulerContext } from '../scheduler/scheduler-base';
 
@@ -78,7 +78,7 @@ export default function SectionHeaderRenderer({
       </Menu>
       <Tooltip label={`Remove ${section.name}`}>
         <ActionIcon size="sm" variant="transparent" onClick={() => removeSection(section.id)}>
-          <TrashSolidIcon className="text-attention hover:text-attention-hover" />
+          <IconTrashFilled className="text-attention hover:text-attention-hover" />
         </ActionIcon>
       </Tooltip>
       <div

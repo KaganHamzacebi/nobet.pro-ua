@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+
 export const GenerateUUID = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (getRandomNumberGenerator() * 16) | 0,
@@ -22,4 +24,9 @@ const getRandomNumberGenerator = () => {
     return value / Number(multiplier);
   }
   return 0;
+};
+
+export const GenerateHash = async (value: string) => {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(value, salt);
 };

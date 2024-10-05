@@ -1,3 +1,9 @@
+import SchedulerBase from '@/components/ui/scheduler/scheduler-base';
+
 export default function Dashboard() {
-  return <div>dashboard</div>;
+  return (
+    <div>
+      <SchedulerBase />
+    </div>
+  );
 }
