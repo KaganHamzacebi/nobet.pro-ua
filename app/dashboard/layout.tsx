@@ -1,4 +1,4 @@
-import DashboardNavbar from '@/components/ui/dashboard-navbar';
+import DashboardNavbar from '@/components/ui/navbar/dashboard-navbar';
 import { ReactNode } from 'react';
 
 interface IDashboardLayout {
