@@ -10,7 +10,7 @@ export interface INavLink {
   href: string;
 }
 
-export default function NavLink({ name, href }: Readonly<INavLink>) {
+export default function HeaderNavItem({ name, href }: Readonly<INavLink>) {
   const pathname = usePathname();
 
   const isActive = useCallback(

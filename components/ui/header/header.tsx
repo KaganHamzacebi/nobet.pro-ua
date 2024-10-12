@@ -1,9 +1,9 @@
 'use client';
 
 import { AppShell, Burger, Group } from '@mantine/core';
-import Logo from './logo';
-import NavLink, { INavLink } from './nav-link';
-import UserAvatar from './user-avatar';
+import Logo from '../logo';
+import UserAvatar from '../user-avatar';
+import HeaderNavItem, { INavLink } from './header-nav-item';
 
 const navLinks: INavLink[] = [
   {
@@ -26,7 +26,7 @@ export default function Header() {
         </Group>
         <Group className="absolute left-1/2 -translate-x-1/2" visibleFrom="sm">
           {navLinks.map(navLink => (
-            <NavLink key={navLink.href} name={navLink.name} href={navLink.href} />
+            <HeaderNavItem key={navLink.href} name={navLink.name} href={navLink.href} />
           ))}
         </Group>
         <UserAvatar />
