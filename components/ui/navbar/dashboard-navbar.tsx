@@ -1,10 +1,21 @@
 'use client';
 
-import { navbarItems } from '@/libs/mock/navbar-items';
 import classes from '@/styles/DashboardNavbar.module.scss';
-import { AppShell, ScrollArea } from '@mantine/core';
+import { AppShell, rem, ScrollArea } from '@mantine/core';
+import { IconListCheck, IconUser } from '@tabler/icons-react';
 import { NavbarItem } from './navbar-item';
 import { UserButton } from './user-button';
+
+const navbarIconStyle = { style: { width: rem(18), height: rem(18) } };
+
+const navbarItems = [
+  { label: 'Duties', link: '/dashboard/duties', icon: <IconListCheck {...navbarIconStyle} /> },
+  {
+    label: 'Assistants',
+    link: '/dashboard/assistant-list',
+    icon: <IconUser {...navbarIconStyle} />
+  }
+];
 
 export default function DashboardNavbar() {
   const links = navbarItems.map(item => <NavbarItem {...item} key={item.label} />);

@@ -4,23 +4,17 @@ import classes from '@/styles/NavbarItem.module.scss';
 import { Box, Collapse, Group, Text, ThemeIcon, UnstyledButton, rem } from '@mantine/core';
 import { IconChevronRight } from '@tabler/icons-react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 interface INavbarItem {
-  icon: React.FC<any>;
+  icon: ReactNode;
   label: string;
   initiallyOpened?: boolean;
   links?: { label: string; link: string }[];
   link: string;
 }
 
-export function NavbarItem({
-  icon: Icon,
-  label,
-  initiallyOpened,
-  links,
-  link
-}: Readonly<INavbarItem>) {
+export function NavbarItem({ icon, label, initiallyOpened, links, link }: Readonly<INavbarItem>) {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map(link => (
@@ -44,7 +38,7 @@ export function NavbarItem({
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>
             <ThemeIcon variant="light" size={30}>
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+              {icon}
             </ThemeIcon>
             <Box ml="md">{label}</Box>
           </Box>
