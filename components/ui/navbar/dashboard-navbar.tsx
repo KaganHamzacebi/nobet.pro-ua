@@ -1,27 +1,25 @@
 'use client';
 
-import { AppShell } from '@mantine/core';
-import { IconHomeFilled, IconUsers } from '@tabler/icons-react';
-import NavbarItem, { INavbarItem } from './navbar-item';
-
-const iconSize = 20;
-
-const navbarItems: INavbarItem[] = [
-  { href: '/dashboard/duties', label: 'Duties', icon: <IconHomeFilled size={iconSize} /> },
-  { href: '/dashboard/assistant-list', label: 'Assistants', icon: <IconUsers size={iconSize} /> }
-];
-
-const ProfileItem = null;
+import { navbarItems } from '@/libs/mock/navbar-items';
+import classes from '@/styles/DashboardNavbar.module.scss';
+import { AppShell, ScrollArea } from '@mantine/core';
+import { NavbarItem } from './navbar-item';
+import { UserButton } from './user-button';
 
 export default function DashboardNavbar() {
+  const links = navbarItems.map(item => <NavbarItem {...item} key={item.label} />);
+
   return (
-    <AppShell.Navbar py="sm">
-      <AppShell.Section>
-        {ProfileItem}
-        {navbarItems.map(item => (
-          <NavbarItem key={item.label} {...item} />
-        ))}
-      </AppShell.Section>
+    <AppShell.Navbar>
+      <nav className={classes.navbar}>
+        <ScrollArea className={classes.links}>
+          <div className={classes.linksInner}>{links}</div>
+        </ScrollArea>
+
+        <div className={classes.footer}>
+          <UserButton />
+        </div>
+      </nav>
     </AppShell.Navbar>
   );
 }

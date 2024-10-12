@@ -20,7 +20,7 @@ export default function Shell({ children }: Readonly<IShell>) {
     <AppShell
       header={{ height: { base: 60, md: 70, lg: 80 }, collapsed: !pinned }}
       navbar={{
-        width: inDashboard ? { base: 250 } : 0,
+        width: inDashboard ? 300 : 0,
         breakpoint: 'sm',
         collapsed: { mobile: true, desktop: navbarCollapsed }
       }}
