@@ -1,25 +1,22 @@
 'use client';
 
+import { SelectAssistant } from '@/libs/db/schema';
+import classes from '@/styles/AssistantDndList.module.scss';
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd';
 import { rem, Text } from '@mantine/core';
 import { useListState } from '@mantine/hooks';
 import { IconGripVertical } from '@tabler/icons-react';
 import cx from 'clsx';
-import classes from './DragDropList.module.scss';
 
-const data = [
-  { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-  { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-  { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-  { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-  { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' }
-];
+interface IAssistantDNDList {
+  assistantList: SelectAssistant[] | undefined;
+}
 
-export default function DragDropList() {
-  const [state, handlers] = useListState(data);
+export default function AssistantDNDList({ assistantList }: Readonly<IAssistantDNDList>) {
+  const [state, handlers] = useListState(assistantList ?? []);
 
   const items = state.map((item, index) => (
-    <Draggable key={item.symbol} index={index} draggableId={item.symbol}>
+    <Draggable key={item.assistant_name} index={index} draggableId={item.assistant_name}>
       {(provided, snapshot) => (
         <div
           className={cx(classes.item, { [classes.itemDragging]: snapshot.isDragging })}
@@ -28,13 +25,7 @@ export default function DragDropList() {
           <div {...provided.dragHandleProps} className={classes.dragHandle}>
             <IconGripVertical style={{ width: rem(18), height: rem(18) }} stroke={1.5} />
           </div>
-          <Text className={classes.symbol}>{item.symbol}</Text>
-          <div>
-            <Text>{item.name}</Text>
-            <Text c="dimmed" size="sm">
-              Position: {item.position} • Mass: {item.mass}
-            </Text>
-          </div>
+          <Text>{item.assistant_name}</Text>
         </div>
       )}
     </Draggable>
@@ -43,7 +34,7 @@ export default function DragDropList() {
   return (
     <DragDropContext
       onDragEnd={({ destination, source }) =>
-        handlers.reorder({ from: source.index, to: destination?.index || 0 })
+        handlers.reorder({ from: source.index, to: destination?.index ?? 0 })
       }>
       <Droppable droppableId="dnd-list" direction="vertical">
         {provided => (
